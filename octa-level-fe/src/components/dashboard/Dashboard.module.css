@@ -1,0 +1,27 @@
+.layout {
+  margin: 6rem 15%;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.layout > * {
+  text-decoration: none;
+}
+
+.card-container {
+  justify-content: space-around;
+}
+
+@media (max-width: 750px) {
+  .layout,
+  .card-container {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 970px) {
+  .layout {
+    margin: 6rem 8%;
+  }
+}
