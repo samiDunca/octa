@@ -4,8 +4,8 @@ import { Layout, Space, Table, Button } from 'antd'
 
 import MainNav from 'components/navigation/MainNav'
 import AddAssessmentModal from './addAssessment/AddAssessmentModal'
-import EditAssessmentDataModal from 'components/assessments/editAssessmentData/editAssessmentDataModal'
-import { getAllAssessments, getOneRecipe } from 'redux/assessment/AssessmentActions'
+import EditAssessmentDataModal from 'components/assessments/editAssessmentData/EditAssessmentDataModal'
+import { getAllAssessments, getOneAssessment } from 'redux/assessment/AssessmentActions'
 
 import styles from 'components/assessments/Assessments.module.css'
 import commonStyles from 'sharedStyles/CommonStyles.module.css'
@@ -111,7 +111,7 @@ const Assessments = () => {
             onRow={(record, rowIndex) => {
               return {
                 onClick: async event => {
-                  const assessmentObj = await dispatch(getOneRecipe(record.project.assessment))
+                  const assessmentObj = await dispatch(getOneAssessment(record.project.assessment))
                   await setClientId(record._id)
 
                   setAssessment(assessmentObj)

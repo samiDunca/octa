@@ -2,17 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input, Button, Modal, Checkbox, Select, InputNumber } from 'antd'
 
-import { getOneRecipe, updateAssessment } from 'redux/assessment/AssessmentActions'
+import { updateAssessment } from 'redux/assessment/AssessmentActions'
 
-import styles from 'components/assessments/editAssessmentData/editAssessmentDataModal.module.css'
-import { produceWithPatches } from 'immer'
+import styles from 'components/assessments/editAssessmentData/EditAssessmentDataModal.module.css'
+import commonStyles from 'sharedStyles/CommonStyles.module.css'
 
 const { Option } = Select
 
 const EditAssessmentDataModal = props => {
   const dispatch = useDispatch()
   const [form] = Form.useForm()
-  const [value, setValue] = useState({})
 
   useEffect(() => {
     form.setFieldsValue({
@@ -32,7 +31,6 @@ const EditAssessmentDataModal = props => {
       crisisLatch: props.assessment.crisisLatch,
       comment: props.assessment.comment,
     })
-    setValue(props.assessment)
   }, [props.assessment])
 
   const handleSubmit = values => {
@@ -46,12 +44,10 @@ const EditAssessmentDataModal = props => {
     dispatch(updateAssessment(values, props.assessment._id, props.clientId))
     props.handleCancel()
     form.resetFields()
-    setValue({})
   }
   const handleCancel = () => {
     props.handleCancel()
     form.resetFields()
-    setValue({})
   }
 
   const ceilingField = Form.useWatch('ceiling', form)
@@ -86,7 +82,7 @@ const EditAssessmentDataModal = props => {
   return (
     <>
       <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel} width={700}>
-        <h1 className={styles['heading-details']}>Detalii Măsuri</h1>
+        <h1 className={commonStyles['modal-heading']}>Detalii Măsuri</h1>
         <Form form={form} onFinish={handleSubmit} layout="vertical">
           <h3 className={styles.categories}>Dimensiuni</h3>
           <Input.Group className={styles.row}>

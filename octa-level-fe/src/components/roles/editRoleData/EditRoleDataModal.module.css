@@ -3,7 +3,19 @@
 }
 
 .role-input-width {
-  width: 30rem;
+  width: 20rem;
+}
+
+.role-name-and-delete-btn-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.role-name-and-delete-btn-box Button {
+  /* display: flex; */
+  /* margin-top: 3rem; */
+  height: 7.2rem;
+  width: 17%;
 }
 
 /* --------------apple-switch */
@@ -26,16 +38,21 @@
 
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.options-box-line:nth-child(2n - 1),
-.options-box-line:nth-child(2n) {
+.options-box:nth-child(2n - 1),
+.options-box:nth-child(2n) {
   border-right: 1px solid rgb(141, 141, 141);
 }
 
-.options-box-line:nth-child(11),
-.options-box-line:nth-child(12),
-.options-box-line:nth-child(13),
-.options-box-line:nth-child(14) {
+.options-box:nth-child(11),
+.options-box:nth-child(12),
+.options-box:nth-child(13),
+.options-box:nth-child(14) {
   border-right: none;
+}
+
+.form-item {
+  margin-bottom: 0rem;
 }

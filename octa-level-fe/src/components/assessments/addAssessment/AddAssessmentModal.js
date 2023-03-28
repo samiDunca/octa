@@ -26,7 +26,7 @@ const AddAssessmentModal = props => {
     <>
       <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel}>
         {/* <div className={commonStyles['style-assesment-modal']}> */}
-        <h1 className={styles['heading-new-assessment']}>Măsură nouă</h1>
+        <h1 className={commonStyles['modal-heading']}>Măsură nouă</h1>
         <Form form={form} onFinish={handleSubmit} layout="vertical">
           <Form.Item
             name="name"

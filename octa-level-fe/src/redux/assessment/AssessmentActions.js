@@ -1,4 +1,5 @@
 import { AssessmentActions } from 'redux/assessment/AssessmentSlice'
+import { updateRole } from 'redux/role/RoleActions'
 
 export const getAllAssessments = () => {
   return async dispatch => {
@@ -67,7 +68,7 @@ export const addNewAssessment = newAssessment => {
   }
 }
 
-export const getOneRecipe = ID => {
+export const getOneAssessment = ID => {
   return async dispatch => {
     var requestOptions = {
       method: 'GET',
@@ -99,8 +100,8 @@ export const getOneRecipe = ID => {
 export const updateAssessment = (values, assessmentId, clientId) => {
   return async dispatch => {
     try {
-      console.log({ assessmentId })
-      console.log({ clientId })
+      // console.log({ assessmentId })
+      // console.log({ clientId })
       var myHeaders = new Headers()
       myHeaders.append('idClient', clientId)
       myHeaders.append('Content-Type', 'application/json')

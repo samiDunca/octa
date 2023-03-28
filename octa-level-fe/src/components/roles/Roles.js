@@ -4,6 +4,7 @@ import { Layout, Button, Table, Space } from 'antd'
 
 import DashNav from 'components/navigation/DashNav'
 import AddRoleModal from 'components/roles/addRole/AddRoleModal'
+import EditRoleDataModal from 'components/roles/editRoleData/EditRoleDataModal'
 import { getAllRoles } from 'redux/role/RoleActions'
 
 import styles from 'components/roles/Roles.module.css'
@@ -13,8 +14,12 @@ const { Content } = Layout
 
 const Roles = () => {
   const dispatch = useDispatch()
+  // const [newAssessModalIsOpen, setNewAssessModalIsOpen] = useState(false)
+  // const [editModalIsOpen, setEditModalIsOpen] = useState(false)
   const [newRoleModalIsOpen, setNewRoleModalIsOpen] = useState(false)
   const [editModalIsOpen, setEditModalIsOpen] = useState(false)
+  const [oneRole, setOneRole] = useState({})
+  const [toggle, setToggle] = useState(false)
 
   useEffect(() => {
     dispatch(getAllRoles())
@@ -81,7 +86,25 @@ const Roles = () => {
           </Button>
         </div>
         <AddRoleModal isOpen={newRoleModalIsOpen} handleCancel={handleCancelNewRoleModal} />
-        <Table columns={columns} dataSource={roles} />
+        <EditRoleDataModal
+          isOpen={editModalIsOpen}
+          handleCancel={handleCancelEditModal}
+          oneRole={oneRole}
+          triggerRerender={toggle}
+        />
+        <Table
+          columns={columns}
+          dataSource={roles}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: async event => {
+                setOneRole(record)
+                showEditModal(true)
+                setToggle(!toggle)
+              },
+            }
+          }}
+        />
       </Content>
     </div>
   )

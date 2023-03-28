@@ -18,3 +18,12 @@
 }
 
 /* ------------------- modals */
+
+.modal-heading {
+  display: flex;
+  justify-content: center;
+}
+
+.style-role-modal {
+  padding: 1rem 2rem;
+}
