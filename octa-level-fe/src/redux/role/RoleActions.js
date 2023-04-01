@@ -106,7 +106,6 @@ export const deleteRoleById = roleID => {
       )
 
       if (response.status !== 204) {
-        console.log(response)
         throw new Error('Could not delete role data!')
       }
 

@@ -16,7 +16,10 @@ export const getAllAssessments = () => {
     }
 
     const fetchData = async () => {
-      const response = await fetch('http://localhost:8080/api/v1/assessment', requestOptions)
+      const response = await fetch(
+        `${process.env.REACT_APP_API_KEY}/api/v1/assessment`,
+        requestOptions,
+      )
 
       if (!response.ok) {
         throw new Error('Could not fetch assessments data!')
@@ -55,7 +58,10 @@ export const addNewAssessment = newAssessment => {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/assessment', requestOptions)
+      const response = await fetch(
+        `${process.env.REACT_APP_API_KEY}/api/v1/assessment`,
+        requestOptions,
+      )
       const data = await response.json()
       if (response.status === 201) {
         dispatch(AssessmentActions.addNewAssessment(data.data))
@@ -76,7 +82,10 @@ export const getOneAssessment = ID => {
     }
 
     const fetchAssessment = async () => {
-      const response = await fetch(`http://localhost:8080/api/v1/assessment/${ID}`, requestOptions)
+      const response = await fetch(
+        `${process.env.REACT_APP_API_KEY}/api/v1/assessment/${ID}`,
+        requestOptions,
+      )
 
       if (!response.ok) {
         throw new Error('Could not fetch assessment data!')
@@ -107,7 +116,7 @@ export const updateAssessment = (values, assessmentId, clientId) => {
       myHeaders.append('Content-Type', 'application/json')
 
       const updateAssessment = await fetch(
-        `http://localhost:8080/api/v1/assessment/${assessmentId}`,
+        `${process.env.REACT_APP_API_KEY}/api/v1/assessment/${assessmentId}`,
         {
           method: 'PUT',
           headers: myHeaders,

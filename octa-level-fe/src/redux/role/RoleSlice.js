@@ -4,7 +4,6 @@ const RoleSlice = createSlice({
   name: 'RoleSlice',
   initialState: {
     roles: [],
-    currentRole: null,
   },
   reducers: {
     getAllRoles: (state, action) => {
@@ -33,10 +32,8 @@ const RoleSlice = createSlice({
     },
 
     deleteRole: (state, action) => {
-      console.log(action.payload)
       const index = state.roles.findIndex(el => el._id === action.payload)
       const newArray = [...state.roles]
-      console.log(index)
       newArray.splice(index, 1)
       return {
         ...state,

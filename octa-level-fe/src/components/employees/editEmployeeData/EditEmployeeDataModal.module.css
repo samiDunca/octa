@@ -1,0 +1,22 @@
+.two-columns-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 8%;
+}
+
+.role-name-and-delete-btn-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5rem;
+  margin-bottom: 3rem;
+}
+.role-name-and-delete-btn-box h1 {
+  margin: 0;
+}
+
+.role-name-and-delete-btn-box Button {
+  /* height: 7.2rem; */
+  /* width: 17%; */
+}

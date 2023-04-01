@@ -1,96 +1,156 @@
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Layout, Table, Button, Space, Form, Select, Tag, Popover } from 'antd'
+
 import DashNav from 'components/navigation/DashNav'
-import React from 'react'
-import { useState } from 'react'
-import { Layout, Modal, Button, Form } from 'antd'
-import Input from 'rc-input'
+import { getAllEmployees } from 'redux/employee/EmployeeActions'
+
+import styles from 'components/employees/Employees.module.css'
+import commonStyles from 'sharedStyles/CommonStyles.module.css'
+import AddEmployeeModal from './addEmployee/AddEmployeeModal'
+import EditEmployeeDataModal from './editEmployeeData/EditEmployeeDataModal'
+
 const { Content } = Layout
 
-const MyFormItemContext = React.createContext([])
-function toArr(str) {
-  return Array.isArray(str) ? str : [str]
-}
-const MyFormItemGroup = ({ prefix, children }) => {
-  const prefixPath = React.useContext(MyFormItemContext)
-  const concatPath = React.useMemo(() => [...prefixPath, ...toArr(prefix)], [prefixPath, prefix])
-  return <MyFormItemContext.Provider value={concatPath}>{children}</MyFormItemContext.Provider>
-}
-const MyFormItem = ({ name, ...props }) => {
-  const prefixPath = React.useContext(MyFormItemContext)
-  const concatName = name !== undefined ? [...prefixPath, ...toArr(name)] : undefined
-  return <Form.Item name={concatName} {...props} />
-}
-
 const Employees = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [form] = Form.useForm()
-  const showModal = () => {
-    setIsModalOpen(true)
-  }
-  const handleOk = () => {
-    setIsModalOpen(false)
-  }
-  const handleCancel = () => {
-    setIsModalOpen(false)
+  const [newEmployeeModalIsOpen, setNewEmployeeModalIsOpen] = useState(false)
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false)
+  const [employee, setEmployee] = useState({})
+  const [toggle, setToggle] = useState(false)
+  const dispatch = useDispatch()
+
+  const employees = useSelector(state => state.employee.employees)
+
+  // useEffect(() => {
+  // dispatch(getAllEmployees())
+  // }, [])
+
+  const showNewEmployeeModal = () => {
+    setNewEmployeeModalIsOpen(true)
   }
 
-  const handleSubmit = value => {
-    console.log(value)
+  const showEditModal = () => {
+    setEditModalIsOpen(true)
   }
 
-  const onFinish = value => {
-    console.log(value)
+  const handleCancelNewEmployeeModal = () => {
+    setNewEmployeeModalIsOpen(false)
   }
-  const tailLayout = {
-    wrapperCol: {
-      offset: 8,
-      span: 16,
+
+  const handleCancelEditModal = () => {
+    setEditModalIsOpen(false)
+  }
+
+  const editEmployeeHandler = record => {
+    console.log(record)
+
+    setEmployee(record)
+    showEditModal(true)
+    setToggle(!toggle)
+  }
+
+  // Nume, Prenume, Email, Adresa, Telefon, Rol
+  const renderAuthorities = authorities => {
+    return (
+      <div className={styles['display-authorities']}>
+        {authorities?.map(el => (
+          <p key={el} value={el}>
+            {el}
+          </p>
+        ))}
+      </div>
+    )
+  }
+  // const content = (
+  // );
+
+  const columns = [
+    {
+      title: 'Nume',
+      dataIndex: 'lastName',
+      key: 'lastName',
     },
-  }
+    {
+      title: 'Prenume',
+      dataIndex: 'firstName',
+      key: 'firstName',
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Adresă',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Telefon',
+      dataIndex: 'phone',
+      key: 'phone',
+    },
+    {
+      title: 'Rol',
+      // dataIndex: ['role', 'name'],
+      dataIndex: 'role',
+      key: 'role',
+      render: record => {
+        if (record?.name !== undefined) {
+          return (
+            <Popover
+              content={renderAuthorities(record?.authorities)}
+              title={`${record?.name.charAt(0).toUpperCase() + record?.name.slice(1)}`}
+              trigger="hover"
+              placement="leftTop"
+            >
+              <Button size="small" type="primary" ghost>
+                {record?.name.toUpperCase()}
+              </Button>
+            </Popover>
+          )
+        } else {
+          return <></>
+        }
+      },
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <a onClick={() => editEmployeeHandler(record)}>Edit</a>
+        </Space>
+      ),
+    },
+  ]
 
+  // Nume, Prenume,
+  // Email, Telefon,
+  // Adresa
+  // Rol
   return (
     <div>
       <DashNav />
       <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
-        <h1>Employees</h1>
-      </Content>
-      <Button type="primary" onClick={showModal}>
-        Open Modal
-      </Button>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={form.submit} onCancel={handleCancel}>
-        {/* <Form form={form} onFinish={handleSubmit}>
-          <Form.Item
-            name="customizeGender"
-            label="Customize Gender"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-        </Form> */}
-        <Form name="form_item_path" layout="vertical" onFinish={onFinish}>
-          <MyFormItemGroup prefix={['user']}>
-            <MyFormItemGroup prefix={['name']}>
-              <MyFormItem name="firstName" label="First Name">
-                <Input />
-              </MyFormItem>
-              <MyFormItem name="lastName" label="Last Name">
-                <Input />
-              </MyFormItem>
-            </MyFormItemGroup>
-
-            <MyFormItem name="age" label="Age">
-              <Input />
-            </MyFormItem>
-          </MyFormItemGroup>
-
-          <Button type="primary" htmlType="submit">
-            Submit
+        <div className={commonStyles['header-box']}>
+          <h1>Angajați</h1>
+          <Button type="primary" onClick={showNewEmployeeModal}>
+            Adaugă Angajat
           </Button>
-        </Form>
-      </Modal>
+        </div>
+        <AddEmployeeModal
+          isOpen={newEmployeeModalIsOpen}
+          handleCancel={handleCancelNewEmployeeModal}
+        />
+        <EditEmployeeDataModal
+          isOpen={editModalIsOpen}
+          handleCancel={handleCancelEditModal}
+          employee={employee}
+          triggerRerender={toggle}
+        />
+        <Table columns={columns} dataSource={employees} />
+      </Content>
     </div>
   )
 }

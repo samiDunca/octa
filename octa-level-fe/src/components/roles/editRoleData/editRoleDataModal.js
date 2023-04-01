@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Button, Form, Input, Modal, Switch } from 'antd'
+import { Button, Form, Input, Modal, Switch, message, Popconfirm } from 'antd'
 
 import { deleteRoleById, updateRoleById } from 'redux/role/RoleActions'
 
 import styles from 'components/roles/editRoleData/EditRoleDataModal.module.css'
 import commonStyles from 'sharedStyles/CommonStyles.module.css'
-import Item from 'antd/es/list/Item'
 
 const EditRoleDataModal = props => {
   const [form] = Form.useForm()
   const [roleId, setRoleId] = useState('')
   const dispatch = useDispatch()
 
+  const text = 'Sunteți sigur că doriți să ștergeți acest Rol?'
+  const description = `Șterge rolul cu numele ${props.oneRole.name}`
   useEffect(() => {
     // console.log(props.oneRole)
     let arrayAuth = props.oneRole?.authorities
@@ -77,6 +78,7 @@ const EditRoleDataModal = props => {
 
   const deleteRoleHandler = () => {
     if (roleId !== '') dispatch(deleteRoleById(roleId))
+    message.info(`Rolul cu numele "${props.oneRole.name}" a fost șters cu succes.`)
     props.handleCancel()
   }
 
@@ -103,9 +105,17 @@ const EditRoleDataModal = props => {
               >
                 <Input style={{ width: '23rem' }} />
               </Form.Item>
-              <Button type="primary" danger onClick={deleteRoleHandler}>
-                Șterge Rol
-              </Button>
+              <Popconfirm
+                placement="leftTop"
+                title={text}
+                onConfirm={deleteRoleHandler}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button type="primary" danger>
+                  Șterge Rol
+                </Button>
+              </Popconfirm>
             </Input.Group>
             <h3>Autorități</h3>
             <Input.Group className={styles['options-container']}>

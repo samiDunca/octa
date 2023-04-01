@@ -10,53 +10,16 @@ import { getAllAssessments, getOneAssessment } from 'redux/assessment/Assessment
 import styles from 'components/assessments/Assessments.module.css'
 import commonStyles from 'sharedStyles/CommonStyles.module.css'
 
-const { Content } = Layout
-
-const columns = [
-  {
-    title: 'Nume',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a>{text}</a>,
-  },
-  {
-    title: 'Telefon',
-    dataIndex: 'phone',
-    key: 'phone',
-  },
-  {
-    title: 'Adresă',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Data',
-    dataIndex: 'data',
-    key: 'data',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Edit</a>
-      </Space>
-    ),
-  },
-]
-
 const Assessments = () => {
+  const { Content } = Layout
+
   const dispatch = useDispatch()
   const [newAssessModalIsOpen, setNewAssessModalIsOpen] = useState(false)
   const [editModalIsOpen, setEditModalIsOpen] = useState(false)
   const [assessment, setAssessment] = useState({})
   const [clientId, setClientId] = useState('')
-  // const [assessmentId, setAssessmentId] = useState(0)
+
+  const assessments1 = useSelector(state => state.assessment.assessments)
 
   useEffect(() => {
     console.log('suntem in useEffect-ul Assessments')
@@ -79,11 +42,52 @@ const Assessments = () => {
     setEditModalIsOpen(false)
   }
 
-  const assessments1 = useSelector(state => state.assessment.assessments)
+  const editAssessmentHandler = async record => {
+    const assessmentObj = await dispatch(getOneAssessment(record.project.assessment))
+    await setClientId(record._id)
 
-  // console.log(assessments1)
-  // fetch-uim data
-  //facem tabel
+    setAssessment(assessmentObj)
+    showEditModal(true)
+  }
+
+  const columns = [
+    {
+      title: 'Nume',
+      dataIndex: 'name',
+      key: 'name',
+      render: text => <a>{text}</a>,
+    },
+    {
+      title: 'Telefon',
+      dataIndex: 'phone',
+      key: 'phone',
+    },
+    {
+      title: 'Adresă',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Data',
+      dataIndex: 'data',
+      key: 'data',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <a onClick={() => editAssessmentHandler(record)}>Edit</a>
+        </Space>
+      ),
+    },
+  ]
+
   return (
     <div>
       <MainNav />
@@ -104,27 +108,7 @@ const Assessments = () => {
           isOpen={editModalIsOpen}
           handleCancel={handleCancelEditModal}
         />
-        {assessments1 && (
-          <Table
-            columns={columns}
-            dataSource={assessments1}
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: async event => {
-                  const assessmentObj = await dispatch(getOneAssessment(record.project.assessment))
-                  await setClientId(record._id)
-
-                  setAssessment(assessmentObj)
-                  showEditModal(true)
-
-                  // console.log({ record })
-                  // console.log({ rowIndex })
-                  // console.log({ event })
-                },
-              }
-            }}
-          />
-        )}
+        {assessments1 && <Table columns={columns} dataSource={assessments1} />}
       </Content>
     </div>
   )

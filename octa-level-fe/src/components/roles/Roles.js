@@ -14,12 +14,12 @@ const { Content } = Layout
 
 const Roles = () => {
   const dispatch = useDispatch()
-  // const [newAssessModalIsOpen, setNewAssessModalIsOpen] = useState(false)
-  // const [editModalIsOpen, setEditModalIsOpen] = useState(false)
   const [newRoleModalIsOpen, setNewRoleModalIsOpen] = useState(false)
   const [editModalIsOpen, setEditModalIsOpen] = useState(false)
   const [oneRole, setOneRole] = useState({})
   const [toggle, setToggle] = useState(false)
+
+  const roles = useSelector(state => state.role.roles)
 
   useEffect(() => {
     dispatch(getAllRoles())
@@ -41,7 +41,11 @@ const Roles = () => {
     setEditModalIsOpen(false)
   }
 
-  const roles = useSelector(state => state.role.roles)
+  const editAssessmentHandler = record => {
+    setOneRole(record)
+    showEditModal(true)
+    setToggle(!toggle)
+  }
 
   const columns = [
     {
@@ -69,7 +73,7 @@ const Roles = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a>Edit</a>
+          <a onClick={() => editAssessmentHandler(record)}>Edit</a>
         </Space>
       ),
     },
@@ -97,11 +101,7 @@ const Roles = () => {
           dataSource={roles}
           onRow={(record, rowIndex) => {
             return {
-              onClick: async event => {
-                setOneRole(record)
-                showEditModal(true)
-                setToggle(!toggle)
-              },
+              onClick: async event => {},
             }
           }}
         />

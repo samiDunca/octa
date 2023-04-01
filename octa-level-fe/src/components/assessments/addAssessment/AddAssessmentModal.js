@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Form, Input, Button, Modal } from 'antd'
+import { Form, Input, Modal } from 'antd'
 
 import { addNewAssessment } from 'redux/assessment/AssessmentActions'
 
