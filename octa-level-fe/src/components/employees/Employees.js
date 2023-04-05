@@ -21,9 +21,9 @@ const Employees = () => {
 
   const employees = useSelector(state => state.employee.employees)
 
-  // useEffect(() => {
-  // dispatch(getAllEmployees())
-  // }, [])
+  useEffect(() => {
+    dispatch(getAllEmployees())
+  }, [])
 
   const showNewEmployeeModal = () => {
     setNewEmployeeModalIsOpen(true)

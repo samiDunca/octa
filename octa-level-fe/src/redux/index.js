@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import AssessmentSlice from 'redux/assessment/AssessmentSlice'
 import RoleSlice from 'redux/role/RoleSlice'
-import AuthSlice from 'redux/authentication/(re)setPassword/SetPasswordSlice'
+import AuthSlice from 'redux/authentication/AuthSlice'
 import EmployeeSlice from 'redux/employee/EmployeeSlice'
 
 const store = configureStore({

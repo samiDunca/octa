@@ -1,13 +1,19 @@
 import { Link } from 'react-router-dom'
-import { Breadcrumb, Layout, Menu } from 'antd'
-import { useState } from 'react'
-import Assessments from 'components/assessments/Assessments'
-const { Header, Content, Footer } = Layout
+import { useDispatch } from 'react-redux'
+import { Layout, Menu, Button } from 'antd'
+
+import { AuthActions } from 'redux/authentication/AuthSlice'
+
+const { Header } = Layout
 
 const MainNav = () => {
+  const dispatch = useDispatch()
+
+  const logoutHandler = () => {
+    dispatch(AuthActions.logout())
+  }
   return (
     <Layout>
-      {/* <div> */}
       <Header style={{ position: 'sticky', top: 0, zIndex: 1, width: '100%' }}>
         <div className="logo" />
         <Menu
@@ -21,6 +27,14 @@ const MainNav = () => {
             { label: 'Comenzi', key: '4', icon: <Link to="/orders" /> },
             { label: 'Montaj', key: '5', icon: <Link to="/montages" /> },
             { label: 'Clienti', key: '6', icon: <Link to="/clients" /> },
+            {
+              label: (
+                <Button type="primary" onClick={logoutHandler} danger>
+                  Logout
+                </Button>
+              ),
+              key: '7',
+            },
           ]}
         ></Menu>
       </Header>

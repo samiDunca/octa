@@ -1,38 +1,38 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const setPassword = createAsyncThunk(
-  'auth/register',
-  async ({ password, passwordConfirm, token }, { rejectWithValue }) => {
+export const userLogin = createAsyncThunk(
+  'auth/login',
+  async ({ enteredEmail, enteredPassword, navigate }, { rejectWithValue }) => {
     try {
-      console.log({ password })
-      console.log({ passwordConfirm })
-      console.log({ token })
       var myHeaders = new Headers()
       myHeaders.append('Content-Type', 'application/json')
 
       var raw = JSON.stringify({
-        password,
-        passwordConfirm,
+        email: enteredEmail,
+        password: enteredPassword,
       })
 
       var requestOptions = {
-        method: 'PATCH',
+        method: 'POST',
         headers: myHeaders,
         body: raw,
         redirect: 'follow',
       }
 
       const response = await fetch(
-        `${process.env.REACT_APP_API_KEY}/api/v1/employee/resetPassword/${token}`,
+        `${process.env.REACT_APP_API_KEY}/api/v1/employee/login`,
         requestOptions,
       )
 
-      console.log(response)
-      if (response.status !== 200) {
-        throw new Error(response.statusText)
-      }
       let data = await response.json()
+
+      if (!response.ok) {
+        console.log('data.json(): ', data)
+        throw new Error(data.message)
+      }
+
       localStorage.setItem('userToken', data.token)
+      navigate('/')
       return data
     } catch (error) {
       if (error.response && error.response.data.message) {

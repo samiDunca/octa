@@ -1,38 +1,90 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 
 import './App.css'
-import { getAllRoles } from 'redux/role/RoleActions'
-import { getAllEmployees } from 'redux/employee/EmployeeActions'
 import Assessments from './components/assessments/Assessments'
 import Roles from './components/roles/Roles'
 import Employees from './components/employees/Employees'
 import Offers from 'components/offers/Offers'
 import Dashboard from 'components/dashboard/Dashboard'
-import MainNav from './components/navigation/MainNav'
 import Clients from 'components/clients/Clients'
 import Montages from 'components/montages/Montages'
 import Orders from 'components/orders/Order'
-import SetNewPassword from 'components/authentication/SetNewPassword'
+import SetPassword from 'components/authentication/SetPassword'
+import Login from 'components/authentication/Login'
+import PrivateRoute from 'components/usefullComponents/PrivateRoute'
+import ForgotPassword from 'components/authentication/ForgotPassword'
 
 const App = () => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getAllRoles())
-    dispatch(getAllEmployees())
-  }, [])
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/set-new-password/:token" element={<SetNewPassword />} />
-      <Route path="/assessments" element={<Assessments />} />
-      <Route path="/employees" element={<Employees />} />
-      <Route path="/roles" element={<Roles />} />
-      <Route path="/offers" element={<Offers />} />
-      <Route path="/clients" element={<Clients />} />
-      <Route path="/montages" element={<Montages />} />
-      <Route path="/orders" element={<Orders />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/set-password/:token" element={<SetPassword />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<SetPassword />} />
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/assessments"
+        element={
+          <PrivateRoute>
+            <Assessments />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/employees"
+        element={
+          <PrivateRoute>
+            <Employees />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/roles"
+        element={
+          <PrivateRoute>
+            <Roles />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/offers"
+        element={
+          <PrivateRoute>
+            <Offers />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/clients"
+        element={
+          <PrivateRoute>
+            <Clients />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/montages"
+        element={
+          <PrivateRoute>
+            <Montages />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/orders"
+        element={
+          <PrivateRoute>
+            <Orders />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   )
 }
