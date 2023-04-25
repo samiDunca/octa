@@ -31,17 +31,17 @@ const EditAssessmentDataModal = props => {
       crisisLatch: props.assessment.crisisLatch,
       comment: props.assessment.comment,
     })
-  }, [props.assessment])
+    console.log('suntem in useEffect editAssessmentModal')
+  }, [props.assessment, props.triggerRerender])
 
   const handleSubmit = values => {
     console.log(values)
     Object.entries(values).forEach(([key, value]) => {
       value === undefined ? (values[key] = 0) : (values[key] = value)
     })
-
-    console.log(props.assessment._id)
-    console.log(props.clientId)
-    dispatch(updateAssessment(values, props.assessment._id, props.clientId))
+    values['assessmentDatailsAvailable'] = true
+    values['dateDetailsAddeded'] = new Date()
+    dispatch(updateAssessment(values, props.assessment._id))
     props.handleCancel()
     form.resetFields()
   }
@@ -58,13 +58,8 @@ const EditAssessmentDataModal = props => {
     let cl = parseInt(ceiling, 10)
     let hgt = parseInt(height, 10)
     lintel = cl - hgt
-    // console.log(lintel)
-    // if (lintel >= 0) setValue(oldValues => ({ ...oldValues, ['lintel']: lintel }))
-    // if (lintel >= 0) {
+
     form.setFieldsValue({ lintel: lintel })
-    // } else {
-    // form.setFieldsValue({ lintel: 0 })
-    // }
   }
 
   const calculateLintel = event => {
@@ -81,7 +76,7 @@ const EditAssessmentDataModal = props => {
   }
   return (
     <>
-      <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel} width={700}>
+      <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel} width={700} centered>
         <h1 className={commonStyles['modal-heading']}>Detalii Măsuri</h1>
         <Form form={form} onFinish={handleSubmit} layout="vertical">
           <h3 className={styles.categories}>Dimensiuni</h3>

@@ -24,6 +24,49 @@
   justify-content: center;
 }
 
+.modal-subtitle {
+  margin: 1rem 0 2rem 0;
+}
+
 .style-role-modal {
   padding: 1rem 2rem;
 }
+
+.modal-heading-subtitle-box {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+.modal-heading-subtitle-box span::before {
+  content: '';
+  position: absolute;
+  border-bottom: 2px solid #1677ff;
+  width: 15%;
+  /* transform: translateX(-50%); */
+}
+
+.modal-heading-subtitle-box h5 {
+  margin-top: 1.5rem; /* add this to set a 2rem margin for each element */
+}
+
+/* ------------------- icons */
+
+.icon-box {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.icon,
+.icon-paid-complete {
+  font-size: 1.8rem;
+}
+
+.icon-paid-complete {
+  color: green;
+}
+
+/* .icon-style:hover {
+  transform: scale(1.17);
+  transition: all 0.15s;
+} */

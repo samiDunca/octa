@@ -3,6 +3,16 @@ const offerController = require('./../controllers/offerController');
 
 const router = express.Router();
 
-router.route('/getTableOfferData').get(offerController.getTableOfferData);
+router
+  .route('/')
+  .get(offerController.getAllOffers)
+  .post(offerController.addOffer);
+
+router
+  .route('/:id')
+  .get(offerController.getOffer)
+  .put(offerController.updateOffer)
+  .delete(offerController.deleteOffer);
+// .put(offerController.uploadClientOffer, offerController.updateOffer);
 
 module.exports = router;

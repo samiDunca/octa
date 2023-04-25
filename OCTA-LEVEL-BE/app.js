@@ -11,7 +11,11 @@ const assessmentRouter = require('./routes/assessmentRoutes');
 const roleRouter = require('./routes/roleRoutes');
 const employeeRouter = require('./routes/employeeRoutes');
 const offerRouter = require('./routes/offerRoutes');
-
+const orderRouter = require('./routes/orderRoutes');
+const clientRouter = require('./routes/clientRoutes');
+const doorRouter = require('./routes/doorRoutes');
+const montageRouter = require('./routes/montageRoutes');
+const teamRouter = require('./routes/teamRoutes');
 const app = express();
 app.use(cors());
 // GLOBAL MIDDLEWARES
@@ -41,6 +45,11 @@ app.use('/api/v1/assessment', assessmentRouter);
 app.use('/api/v1/role', roleRouter);
 app.use('/api/v1/employee', employeeRouter);
 app.use('/api/v1/offer', offerRouter);
+app.use('/api/v1/order', orderRouter);
+app.use('/api/v1/client', clientRouter);
+app.use('/api/v1/montage', montageRouter);
+app.use('/api/v1/team', teamRouter);
+app.use('/api/v1/door', doorRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`));

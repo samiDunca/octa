@@ -31,13 +31,14 @@ const DashNav = () => {
             { label: 'Home', key: '1', icon: <Link to="/" /> },
             { label: 'Roluri', key: '2', icon: <Link to="/roles" /> },
             { label: 'Angajati', key: '3', icon: <Link to="/employees" /> },
+            { label: 'Echipe', key: '4', icon: <Link to="/teams" /> },
             {
               label: (
                 <Button type="primary" onClick={logoutHandler} danger>
                   Logout
                 </Button>
               ),
-              key: '4',
+              key: '5',
             },
           ]}
         ></Menu>

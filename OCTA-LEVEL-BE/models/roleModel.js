@@ -23,56 +23,6 @@ const roleSchema = mongoose.Schema({
     'WRITE_CLIENT',
     'READ_REPORT',
   ],
-  // authorities: [
-  //   {
-  //     id: 1,
-  //     name: 'READ_EMPLOYEE',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'WRITE_EMPLOYEE',
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'READ_ASSESSMENT',
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'WRITE_ASSESSMENT',
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'READ_OFFER',
-  //   },
-  //   {
-  //     id: 6,
-  //     name: 'WRITE_OFFER',
-  //   },
-  //   {
-  //     id: 7,
-  //     name: 'READ_ORDER',
-  //   },
-  //   {
-  //     id: 8,
-  //     name: 'WRITE_ORDER',
-  //   },
-  //   {
-  //     id: 9,
-  //     name: 'READ_MONTAGE',
-  //   },
-  //   {
-  //     id: 10,
-  //     name: 'WRITE_ASSESSMENT',
-  //   },
-  //   {
-  //     id: 11,
-  //     name: 'WRITE_ASSESSMENT',
-  //   },
-  //   {
-  //     id: 12,
-  //     name: 'WRITE_ASSESSMENT',
-  //   },
-  // ],
 });
 
 const Role = mongoose.model('Role', roleSchema);

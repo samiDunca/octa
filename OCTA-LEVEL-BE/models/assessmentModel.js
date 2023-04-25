@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const assessmentSchema = new mongoose.Schema({
-  date: { type: Date, default: new Date() },
   width: Number,
   height: Number,
   ceiling: Number,
+  lintel: Number,
   panel: { type: String, default: '' },
   color: { type: String, default: '' },
   engine: { type: Boolean, default: false },
@@ -15,6 +15,11 @@ const assessmentSchema = new mongoose.Schema({
   latch: { type: Boolean, default: false },
   crisisLatch: { type: Boolean, default: false },
   comment: { type: String, default: '' },
+  date: { type: Date, default: new Date() },
+  dateDetailsAddeded: Date,
+  assessmentDetailsAvailable: { type: Boolean, default: false },
+  // dateOfferGenerated: Date,
+  // offerIsGenerated: { type: Boolean, default: false },
 });
 
 const Assessment = mongoose.model('Assessment', assessmentSchema);

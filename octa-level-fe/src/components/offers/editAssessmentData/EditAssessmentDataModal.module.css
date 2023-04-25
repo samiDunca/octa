@@ -1,0 +1,45 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  margin-left: 3rem;
+  justify-content: center;
+  column-gap: 3%;
+  width: 90%;
+}
+
+.row1 {
+  display: flex;
+  justify-content: space-evenly;
+  width: 85%;
+  /* height: 13rem; */
+  /* margin-bottom: 2.2rem; */
+}
+
+.medium {
+  display: flex;
+  width: 40%;
+  column-gap: 2%;
+}
+
+.medium2 {
+  display: flex;
+  width: 15%;
+}
+
+.column2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 41.2%;
+}
+
+.categories {
+  border-bottom: 1px solid #bbb;
+  width: 86%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+  font-size: 15.4px;
+  color: rgb(63, 63, 63);
+
+  margin-top: 2rem;
+}

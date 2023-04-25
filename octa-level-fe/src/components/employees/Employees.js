@@ -149,7 +149,7 @@ const Employees = () => {
           employee={employee}
           triggerRerender={toggle}
         />
-        <Table columns={columns} dataSource={employees} />
+        <Table columns={columns} dataSource={employees} key="lastName" />
       </Content>
     </div>
   )

@@ -96,15 +96,7 @@ const Roles = () => {
           oneRole={oneRole}
           triggerRerender={toggle}
         />
-        <Table
-          columns={columns}
-          dataSource={roles}
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: async event => {},
-            }
-          }}
-        />
+        <Table columns={columns} dataSource={roles} key="name" />
       </Content>
     </div>
   )

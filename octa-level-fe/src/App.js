@@ -1,4 +1,8 @@
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
+
+import { getAllAssessments } from 'redux/assessment/AssessmentActions'
 
 import './App.css'
 import Assessments from './components/assessments/Assessments'
@@ -8,13 +12,23 @@ import Offers from 'components/offers/Offers'
 import Dashboard from 'components/dashboard/Dashboard'
 import Clients from 'components/clients/Clients'
 import Montages from 'components/montages/Montages'
-import Orders from 'components/orders/Order'
+import Orders from 'components/orders/Orders'
 import SetPassword from 'components/authentication/SetPassword'
 import Login from 'components/authentication/Login'
 import PrivateRoute from 'components/usefullComponents/PrivateRoute'
 import ForgotPassword from 'components/authentication/ForgotPassword'
+import Doors from 'components/doors/Doors'
+import Teams from 'components/teams/Teams'
 
 const App = () => {
+  const dispatch = useDispatch()
+  const { userToken } = useSelector(state => state.auth)
+  useEffect(() => {
+    console.log('suntem in App component')
+    if (userToken) {
+      dispatch(getAllAssessments())
+    }
+  }, [userToken])
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
@@ -74,6 +88,22 @@ const App = () => {
         element={
           <PrivateRoute>
             <Montages />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/doors"
+        element={
+          <PrivateRoute>
+            <Doors />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/teams"
+        element={
+          <PrivateRoute>
+            <Teams />
           </PrivateRoute>
         }
       />

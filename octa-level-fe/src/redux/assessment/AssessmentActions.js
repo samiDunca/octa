@@ -31,6 +31,7 @@ export const getAllAssessments = () => {
 
     try {
       const assessmentData = await fetchData()
+      console.log('in getAllAssessments actions', assessmentData.data)
 
       dispatch(
         AssessmentActions.getAllAssessments({
@@ -64,7 +65,12 @@ export const addNewAssessment = newAssessment => {
       )
       const data = await response.json()
       if (response.status === 201) {
-        dispatch(AssessmentActions.addNewAssessment(data.data))
+        console.log(data.data)
+        dispatch(
+          AssessmentActions.addNewAssessment({
+            newAssessment: data.data,
+          }),
+        )
       } else {
         throw new Error('Could not create new assessment!')
       }
@@ -109,10 +115,8 @@ export const getOneAssessment = ID => {
 export const updateAssessment = (values, assessmentId, clientId) => {
   return async dispatch => {
     try {
-      // console.log({ assessmentId })
-      // console.log({ clientId })
       var myHeaders = new Headers()
-      myHeaders.append('idClient', clientId)
+      myHeaders.append('clientid', clientId)
       myHeaders.append('Content-Type', 'application/json')
 
       const updateAssessment = await fetch(
@@ -126,8 +130,8 @@ export const updateAssessment = (values, assessmentId, clientId) => {
       )
 
       const response = await updateAssessment.json()
-      console.log(response)
-      // dispatch(AssessmentActions.updateAssessment(response.data))
+      console.log(response.data)
+      dispatch(AssessmentActions.updateAssessment({ updatedAssessment: response.data }))
     } catch (err) {
       console.log(err)
     }

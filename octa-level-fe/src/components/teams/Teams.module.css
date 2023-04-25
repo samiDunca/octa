@@ -1,0 +1,11 @@
+.cell-employees-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(10rem, 25rem));
+  column-gap: 4rem;
+}
+
+@media (max-width: 600px) {
+  .cell-authorities-container {
+    grid-template-columns: 1fr;
+  }
+}

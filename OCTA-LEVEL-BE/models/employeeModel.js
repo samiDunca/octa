@@ -44,8 +44,10 @@ const employeeSchema = new mongoose.Schema(
     passwordResetExpires: Date,
     address: String,
     phone: String,
-    montages: { type: mongoose.Schema.ObjectId, ref: 'Montage' },
+
+    // one to many
     role: { type: mongoose.Schema.Types.ObjectId, ref: 'Role' },
+    teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],
   }
   // {
   //   toJSON: { virtuals: true },

@@ -54,7 +54,7 @@ const EditEmployeeDataModal = props => {
 
   return (
     <>
-      <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel}>
+      <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel} centered>
         <div className={styles['role-name-and-delete-btn-box']}>
           <h1 className={commonStyles['modal-heading']}>Editează angajatul</h1>
           <Button type="primary" danger onClick={deleteEmployeeHandler}>

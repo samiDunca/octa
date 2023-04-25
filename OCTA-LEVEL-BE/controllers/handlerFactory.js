@@ -1,5 +1,6 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
+
 exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.create(req.body);
@@ -70,6 +71,7 @@ exports.getAll = (Model) =>
 
     res.status(200).json({
       status: 'success',
+      results: documents.length,
       data: {
         documents,
       },

@@ -1,0 +1,22 @@
+.edit-modal-heading {
+  font-size: 3rem;
+}
+
+.edit-modal-subtitle-box {
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dates-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-label {
+  color: #333;
+  font-weight: bold;
+}

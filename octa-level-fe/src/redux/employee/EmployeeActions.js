@@ -5,7 +5,7 @@ export const getAllEmployees = () => {
     var myHeaders = new Headers()
     myHeaders.append(
       'Authorization',
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MjU4NTM1YWQ0NWFlMDQ2NDc1NmU4NyIsImlhdCI6MTY4MDE4MDg5NSwiZXhwIjoxNjg3OTU2ODk1fQ.EhCKJNLOrsu2cueVwKkKXrpDi8aqQ4Kg9OH9cBrKXyc',
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MmVkOWFhYmMyMWY5OGFhZDJiZDY2ZSIsImlhdCI6MTY4MDc5Mzk0MywiZXhwIjoxNjg4NTY5OTQzfQ.HVUG2UYA05YCRFaSrPFz6MPLR3p9dgKJUxSM0YOMOZw',
     )
 
     var requestOptions = {

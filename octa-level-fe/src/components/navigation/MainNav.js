@@ -26,7 +26,8 @@ const MainNav = () => {
             { label: 'Oferte', key: '3', icon: <Link to="/offers" /> },
             { label: 'Comenzi', key: '4', icon: <Link to="/orders" /> },
             { label: 'Montaj', key: '5', icon: <Link to="/montages" /> },
-            { label: 'Clienti', key: '6', icon: <Link to="/clients" /> },
+            { label: 'Uși', key: '6', icon: <Link to="/doors" /> },
+            { label: 'Clienti', key: '7', icon: <Link to="/clients" /> },
             {
               label: (
                 <Button type="primary" onClick={logoutHandler} danger>

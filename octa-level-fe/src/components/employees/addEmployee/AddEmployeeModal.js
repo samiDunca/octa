@@ -38,7 +38,7 @@ const AddEmployeeModal = props => {
 
   return (
     <>
-      <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel}>
+      <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel} centered>
         <h1 className={commonStyles['modal-heading']}>Angajat nou</h1>
         <Form form={form} onFinish={handleSubmit} layout="vertical">
           <Input.Group className={styles['two-columns-box']}>

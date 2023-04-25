@@ -1,0 +1,22 @@
+.order-dropdown {
+  height: 0.5rem;
+}
+
+.upload-icon {
+  height: 2.5rem;
+  width: 2.59rem;
+  font-size: 1.8rem;
+  /* font-size: 27px; */
+  cursor: pointer;
+}
+
+/* .upload-icon:hover {
+  transform: scale(1.17);
+  transition: all 0.15s;
+} */
+
+.offer-upload-link {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

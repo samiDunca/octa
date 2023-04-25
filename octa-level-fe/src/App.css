@@ -16,3 +16,9 @@ body {
   height: 100%;
   width: 100%;
 }
+
+
+/* ---------- offer modal */
+:where(.css-dev-only-do-not-override-1nagc81).ant-modal .ant-modal-content {
+  background-color: #bcd5db;
+}
