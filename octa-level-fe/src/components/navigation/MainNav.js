@@ -34,7 +34,7 @@ const MainNav = () => {
                   Logout
                 </Button>
               ),
-              key: '7',
+              key: '8',
             },
           ]}
         ></Menu>

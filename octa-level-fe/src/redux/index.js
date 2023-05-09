@@ -8,6 +8,7 @@ import ClientSlice from 'redux/client/ClientSlice'
 import OrderSlice from 'redux/order/OrderSlice'
 import MontageSlice from 'redux/montage/MontageSlice'
 import TeamSlice from 'redux/team/TeamSlice'
+import DoorSlice from 'redux/door/DoorSlice'
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     order: OrderSlice.reducer,
     montage: MontageSlice.reducer,
     team: TeamSlice.reducer,
+    door: DoorSlice.reducer,
   },
 })
 

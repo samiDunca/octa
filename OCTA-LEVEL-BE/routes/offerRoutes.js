@@ -8,11 +8,17 @@ router
   .get(offerController.getAllOffers)
   .post(offerController.addOffer);
 
+router.put(
+  '/document/deleteSpecificDocuments/:offerId',
+  offerController.deleteSpecificDocuments
+);
+
 router
   .route('/:id')
   .get(offerController.getOffer)
   .put(offerController.updateOffer)
   .delete(offerController.deleteOffer);
+
 // .put(offerController.uploadClientOffer, offerController.updateOffer);
 
 module.exports = router;

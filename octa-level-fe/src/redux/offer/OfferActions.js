@@ -116,9 +116,44 @@ export const updateOffer = (values, offerId) => {
         throw new Error(response.message)
       }
 
-      const updatedOffer = await response.json()
-      console.log(updatedOffer)
-      dispatch(OfferActions.updateOffer({ updatedOffer: updatedOffer.data }))
+      const { data } = await response.json()
+      console.log(data)
+      dispatch(OfferActions.updateOffer({ updatedOffer: data }))
+      return data
+    } catch (err) {
+      console.log(err)
+      return 'eroare'
+    }
+  }
+}
+
+export const deleteSpecificDocuments = (documentsLocations, offerId) => {
+  return async dispatch => {
+    try {
+      var myHeaders = new Headers()
+      myHeaders.append('Content-Type', 'application/json')
+
+      var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: JSON.stringify({
+          documentsLocations,
+        }),
+        redirect: 'follow',
+      }
+
+      const response = await fetch(
+        `${process.env.REACT_APP_API_KEY}/api/v1/offer/document/deleteSpecificDocuments/${offerId}`,
+        requestOptions,
+      )
+
+      if (!response.ok) {
+        throw new Error(response.message)
+      }
+
+      const { data } = await response.json()
+      console.log('deleteSpecificDocuments action response: ', data)
+      dispatch(OfferActions.updateOffer({ updatedOffer: data }))
     } catch (err) {
       console.log(err)
     }

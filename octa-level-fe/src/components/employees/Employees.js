@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
+import * as CONSTANTS from './../../GlobalConstants'
+
 import { Layout, Table, Button, Space, Form, Select, Tag, Popover } from 'antd'
 
 import DashNav from 'components/navigation/DashNav'
@@ -20,6 +23,7 @@ const Employees = () => {
   const dispatch = useDispatch()
 
   const employees = useSelector(state => state.employee.employees)
+  const { userInfo } = useSelector(state => state.auth)
 
   useEffect(() => {
     dispatch(getAllEmployees())
@@ -42,8 +46,6 @@ const Employees = () => {
   }
 
   const editEmployeeHandler = record => {
-    console.log(record)
-
     setEmployee(record)
     showEditModal(true)
     setToggle(!toggle)
@@ -119,7 +121,15 @@ const Employees = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={() => editEmployeeHandler(record)}>Edit</a>
+          <a
+            onClick={() =>
+              userInfo?.role.authorities.includes(CONSTANTS.WRITE_EMPLOYEE) &&
+              editEmployeeHandler(record)
+            }
+            disabled={!userInfo?.role.authorities.includes(CONSTANTS.WRITE_EMPLOYEE)}
+          >
+            Edit
+          </a>
         </Space>
       ),
     },
@@ -135,20 +145,28 @@ const Employees = () => {
       <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
         <div className={commonStyles['header-box']}>
           <h1>Angajați</h1>
-          <Button type="primary" onClick={showNewEmployeeModal}>
+          <Button
+            type="primary"
+            onClick={showNewEmployeeModal}
+            disabled={!userInfo?.role.authorities.includes(CONSTANTS.WRITE_EMPLOYEE)}
+          >
             Adaugă Angajat
           </Button>
         </div>
-        <AddEmployeeModal
-          isOpen={newEmployeeModalIsOpen}
-          handleCancel={handleCancelNewEmployeeModal}
-        />
-        <EditEmployeeDataModal
-          isOpen={editModalIsOpen}
-          handleCancel={handleCancelEditModal}
-          employee={employee}
-          triggerRerender={toggle}
-        />
+        {userInfo?.role.authorities.includes(CONSTANTS.WRITE_EMPLOYEE) ? (
+          <AddEmployeeModal
+            isOpen={newEmployeeModalIsOpen}
+            handleCancel={handleCancelNewEmployeeModal}
+          />
+        ) : null}
+        {userInfo?.role.authorities.includes(CONSTANTS.WRITE_EMPLOYEE) ? (
+          <EditEmployeeDataModal
+            isOpen={editModalIsOpen}
+            handleCancel={handleCancelEditModal}
+            employee={employee}
+            triggerRerender={toggle}
+          />
+        ) : null}
         <Table columns={columns} dataSource={employees} key="lastName" />
       </Content>
     </div>

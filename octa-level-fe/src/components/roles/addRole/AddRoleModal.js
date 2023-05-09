@@ -69,82 +69,140 @@ const AddRoleModal = props => {
             </Form.Item>
             <h3>Autorități</h3>
             <Input.Group className={styles['options-container']}>
-              <Form.Item name="READ_EMPLOYEE" valuePropName="checked" labelAlign="right">
+              <Form.Item
+                name="READ_EMPLOYEE"
+                className={styles['form-item']}
+                valuePropName="checked"
+              >
                 <div className={styles['options-box']}>
                   <span>READ_EMPLOYEE: </span>
                   <Switch onClick={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="WRITE_EMPLOYEE" valuePropName="checked">
+              <Form.Item
+                name="WRITE_EMPLOYEE"
+                className={styles['form-item']}
+                valuePropName="checked"
+              >
                 <div className={styles['options-box']}>
                   <span>WRITE_EMPLOYEE: </span>
                   <Switch name="WRITE_EMPLOYEE" onClick={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="READ_ASSESSMENT" valuePropName="checked">
+              <Form.Item name="READ_ROLE" className={styles['form-item']} valuePropName="checked">
+                <div className={styles['options-box']}>
+                  <span>READ_ROLE: </span>
+                  <Switch onClick={onChange} />
+                </div>
+              </Form.Item>
+              <Form.Item name="WRITE_ROLE" className={styles['form-item']} valuePropName="checked">
+                <div className={styles['options-box']}>
+                  <span>WRITE_ROLE: </span>
+                  <Switch name="WRITE_ROLE" onClick={onChange} />
+                </div>
+              </Form.Item>
+              <Form.Item
+                name="READ_ASSESSMENT"
+                className={styles['form-item']}
+                valuePropName="checked"
+              >
                 <div className={styles['options-box']}>
                   <span>READ_ASSESSMENT: </span>
                   <Switch id="READ_ASSESSMENT" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="WRITE_ASSESSMENT" valuePropName="checked">
+              <Form.Item
+                name="WRITE_ASSESSMENT"
+                className={styles['form-item']}
+                valuePropName="checked"
+              >
                 <div className={styles['options-box']}>
                   <span>WRITE_ASSESSMENT: </span>
                   <Switch id="WRITE_ASSESSMENT" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="READ_OFFER" valuePropName="checked">
+              <Form.Item name="READ_OFFER" className={styles['form-item']} valuePropName="checked">
                 <div className={styles['options-box']}>
                   <span>READ_OFFER: </span>
                   <Switch id="READ_OFFER" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="WRITE_OFFER" valuePropName="checked">
+              <Form.Item name="WRITE_OFFER" className={styles['form-item']} valuePropName="checked">
                 <div className={styles['options-box']}>
                   <span>WRITE_OFFER: </span>
                   <Switch id="WRITE_OFFER" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="READ_ORDER" valuePropName="checked">
+              <Form.Item name="READ_ORDER" className={styles['form-item']} valuePropName="checked">
                 <div className={styles['options-box']}>
                   <span>READ_ORDER: </span>
                   <Switch id="READ_ORDER" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="WRITE_ORDER" valuePropName="checked">
+              <Form.Item name="WRITE_ORDER" className={styles['form-item']} valuePropName="checked">
                 <div className={styles['options-box']}>
                   <span>WRITE_ORDER: </span>
                   <Switch id="WRITE_ORDER" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="READ_MONTAGE" valuePropName="checked">
+              <Form.Item
+                name="READ_MONTAGE"
+                className={styles['form-item']}
+                valuePropName="checked"
+              >
                 <div className={styles['options-box']}>
                   <span>READ_MONTAGE: </span>
                   <Switch id="READ_MONTAGE" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="WRITE_MONTAGE" valuePropName="checked">
+              <Form.Item
+                name="WRITE_MONTAGE"
+                className={styles['form-item']}
+                valuePropName="checked"
+              >
                 <div className={styles['options-box']}>
                   <span>WRITE_MONTAGE: </span>
                   <Switch name="WRITE_MONTAGE" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="READ_CLIENT" valuePropName="checked">
+              <Form.Item name="READ_CLIENT" className={styles['form-item']} valuePropName="checked">
                 <div className={styles['options-box']}>
                   <span>READ_CLIENT: </span>
                   <Switch name="READ_CLIENT" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="WRITE_CLIENT" valuePropName="checked">
+              <Form.Item
+                name="WRITE_CLIENT"
+                className={styles['form-item']}
+                valuePropName="checked"
+              >
                 <div className={styles['options-box']}>
                   <span>WRITE_CLIENT: </span>
                   <Switch name="WRITE_CLIENT" onChange={onChange} />
                 </div>
               </Form.Item>
-              <Form.Item name="READ_REPORT" valuePropName="checked">
+              <Form.Item name="READ_DOOR" className={styles['form-item']} valuePropName="checked">
                 <div className={styles['options-box']}>
-                  <span>READ_REPORT: </span>
-                  <Switch name="READ_REPORT" onChange={onChange} />
+                  <span>READ_DOOR: </span>
+                  <Switch name="READ_DOOR" onChange={onChange} />
+                </div>
+              </Form.Item>
+              <Form.Item name="WRITE_DOOR" className={styles['form-item']} valuePropName="checked">
+                <div className={styles['options-box']}>
+                  <span>WRITE_DOOR: </span>
+                  <Switch name="WRITE_DOOR" onChange={onChange} />
+                </div>
+              </Form.Item>
+              <Form.Item name="READ_TEAM" className={styles['form-item']} valuePropName="checked">
+                <div className={styles['options-box']}>
+                  <span>READ_TEAM: </span>
+                  <Switch name="READ_TEAM" onChange={onChange} />
+                </div>
+              </Form.Item>
+              <Form.Item name="WRITE_TEAM" className={styles['form-item']} valuePropName="checked">
+                <div className={styles['options-box']}>
+                  <span>WRITE_TEAM: </span>
+                  <Switch name="WRITE_TEAM" onChange={onChange} />
                 </div>
               </Form.Item>
             </Input.Group>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, Input, Modal, Select } from 'antd'
+import { Button, Form, Input, Modal, Select, Popconfirm } from 'antd'
 
 import { deleteEmployeeById, updateEmployeeById } from 'redux/employee/EmployeeActions'
 
@@ -57,9 +57,16 @@ const EditEmployeeDataModal = props => {
       <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel} centered>
         <div className={styles['role-name-and-delete-btn-box']}>
           <h1 className={commonStyles['modal-heading']}>Editează angajatul</h1>
-          <Button type="primary" danger onClick={deleteEmployeeHandler}>
-            Șterge angajatul
-          </Button>
+          <Popconfirm
+            title="Sunteți sigur că doriți să ștergeți angajatul?"
+            onConfirm={deleteEmployeeHandler}
+            okText="Da"
+            cancelText="Nu"
+          >
+            <Button type="primary" danger>
+              Șterge angajatul
+            </Button>
+          </Popconfirm>
         </div>
         <Form form={form} onFinish={handleSubmit} layout="vertical">
           <Input.Group className={styles['two-columns-box']}>
@@ -101,9 +108,9 @@ const EditEmployeeDataModal = props => {
             <Form.Item name="role">
               <Select placeholder="Selectează un rol" onChange={record => setRoleId(record)}>
                 {roles.map(el => (
-                  <Option key={el._id} value={el._id}>
+                  <Select.Option key={el._id} value={el._id}>
                     {el.name}
-                  </Option>
+                  </Select.Option>
                 ))}
               </Select>
             </Form.Item>

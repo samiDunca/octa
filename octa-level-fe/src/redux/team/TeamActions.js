@@ -27,7 +27,6 @@ export const getAllTeams = () => {
 
     try {
       const { data } = await fetchData()
-      console.log('in getAllTeams actions', data)
 
       dispatch(
         TeamActions.getAllTeams({
@@ -56,8 +55,6 @@ export const addNewTeam = newTeam => {
       const response = await fetch(`${process.env.REACT_APP_API_KEY}/api/v1/team`, requestOptions)
       const { data } = await response.json()
 
-      console.log({ newTeam })
-      console.log({ data })
       if (!response.ok) {
         throw new Error(response.message)
       }
@@ -87,7 +84,7 @@ export const updateTeam = (values, teamId) => {
 
       const { data } = await response.json()
       console.log(data)
-      dispatch(TeamActions.updateTeam({ updatedTeam: data }))
+      dispatch(TeamActions.updateTeam({ updatedTeam: data.data }))
     } catch (err) {
       console.log(err)
     }

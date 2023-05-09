@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux'
 
-// import { PropertySafetyFilled } from '@ant-design/icons'
+import * as CONSTANTS from './../../../GlobalConstants'
+
 import { Form, Input, Button, Modal, InputNumber } from 'antd'
 import { updateOffer } from 'redux/offer/OfferActions'
-// import { updateAssessment } from 'redux/assessment/AssessmentActions'
 
 import styles from 'components/offers/addComment/AddCommentModal.module.css'
 import commonStyles from 'sharedStyles/CommonStyles.module.css'
@@ -27,7 +27,8 @@ const AddCommentModal = props => {
 
   const handleSubmit = values => {
     console.log(values)
-    dispatch(updateOffer(values, props?.record.offer._id))
+    props.userInfo.role?.authorities.includes(CONSTANTS.WRITE_OFFER) &&
+      dispatch(updateOffer(values, props?.record.offer._id))
 
     props.handleCancel()
     form.resetFields()
@@ -40,6 +41,9 @@ const AddCommentModal = props => {
         open={props.isOpen}
         okText="Salvează"
         cancelText="Anulează"
+        okButtonProps={{
+          disabled: !props.userInfo.role?.authorities.includes(CONSTANTS.WRITE_OFFER),
+        }}
       >
         <h1 className={styles['modal-heading']}>Observatii</h1>
         <Form form={form} onFinish={handleSubmit} layout="vertical">
@@ -64,7 +68,9 @@ const AddCommentModal = props => {
               ]}
             >
               {/* <Input.TextArea style={{ width: '120px' }} /> */}
-              <Input.TextArea />
+              <Input.TextArea
+                disabled={!props.userInfo.role?.authorities.includes(CONSTANTS.WRITE_OFFER)}
+              />
             </Form.Item>
           </Input.Group>
         </Form>

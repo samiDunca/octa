@@ -5,41 +5,44 @@ import { updateAssessment } from 'redux/assessment/AssessmentActions'
 import { Form, Input, Button, Modal, Checkbox, Select, InputNumber, ConfigProvider } from 'antd'
 
 import commonStyles from 'sharedStyles/CommonStyles.module.css'
-import styles from 'components/offers/editAssessmentData/EditAssessmentDataModal.module.css'
+import styles from 'components/offers/viewAssessmentData/ViewAssessmentDataModal.module.css'
 
 const { Option } = Select
 
-const EditAssessmentDataModal = props => {
+const ViewAssessmentDataModal = props => {
   const dispatch = useDispatch()
   const [form] = Form.useForm()
 
   useEffect(() => {
+    const assessment = props.record?.assessment
     form.setFieldsValue({
-      date: props.assessment.date,
-      width: props.assessment.width,
-      height: props.assessment.height,
-      ceiling: props.assessment.ceiling,
-      lintel: props.assessment.lintel === undefined ? 0 : props.assessment.lintel,
-      panel: props.assessment.panel,
-      color: props.assessment.color,
-      engine: props.assessment.engine,
-      highLift: props.assessment.highLift,
-      angle: props.assessment.angle,
-      quantity: props.assessment.quantity,
-      handle: props.assessment.handle,
-      latch: props.assessment.latch,
-      crisisLatch: props.assessment.crisisLatch,
-      comment: props.assessment.comment,
+      date: assessment?.date,
+      width: assessment?.width,
+      height: assessment?.height,
+      ceiling: assessment?.ceiling,
+      lintel: assessment?.lintel === undefined ? 0 : assessment?.lintel,
+      panel: assessment?.panel,
+      color: assessment?.color,
+      engine: assessment?.engine,
+      highLift: assessment?.highLift,
+      angle: assessment?.angle,
+      quantity: assessment?.quantity,
+      handle: assessment?.handle,
+      latch: assessment?.latch,
+      crisisLatch: assessment?.crisisLatch,
+      comment: assessment?.comment,
     })
     console.log('suntem in useEffect editAssessmentModal')
-  }, [props.assessment, props.triggerRerender])
+  }, [props?.record, props.triggerRerender])
 
   const handleSubmit = values => {
     console.log(values)
     Object.entries(values).forEach(([key, value]) => {
       value === undefined ? (values[key] = 0) : (values[key] = value)
     })
-    dispatch(updateAssessment(values, props.assessment._id, props.assessment.client._id))
+    dispatch(
+      updateAssessment(values, props.record.assessment._id, props.record.assessment.client._id),
+    )
     props.handleCancel()
     form.resetFields()
   }
@@ -89,15 +92,18 @@ const EditAssessmentDataModal = props => {
         }}
       >
         <Modal
-          onOk={form.submit}
           open={props.isOpen}
           onCancel={handleCancel}
           width={700}
           centered
+          okButtonProps={{
+            disabled: true,
+          }}
           // className={styles['custom-modal']}
         >
-          <h1 className={commonStyles['modal-heading']}>Detalii Măsuri</h1>
-          <Form form={form} onFinish={handleSubmit} layout="vertical">
+          <h1 className={commonStyles['modal-heading']}>Detalii Măsuri (doar vizualizare)</h1>
+          <h3>Client: {props.record.client?.name}</h3>
+          <Form form={form} layout="vertical">
             <h3 className={styles.categories}>Dimensiuni</h3>
             <Input.Group className={styles.row}>
               <Input.Group className={styles.medium}>
@@ -188,4 +194,4 @@ const EditAssessmentDataModal = props => {
   )
 }
 
-export default EditAssessmentDataModal
+export default ViewAssessmentDataModal

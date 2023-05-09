@@ -71,6 +71,8 @@ const EditRoleDataModal = props => {
       : (authoritieName = htmlTag.offsetParent.offsetParent.innerText)
     let authoritieFinalVersion = authoritieName.slice(0, -1)
 
+    console.log(htmlTag)
+    console.log(htmlTag.offsetParent)
     form.setFieldsValue({
       [`${authoritieFinalVersion}`]: checked,
     })
@@ -137,6 +139,22 @@ const EditRoleDataModal = props => {
                   valuePropName="checked"
                 >
                   <Switch onClick={onChange} />
+                </Form.Item>
+              </Input.Group>
+              <Input.Group className={styles['options-box']}>
+                <span>READ_ROLE: </span>
+                <Form.Item name="READ_ROLE" className={styles['form-item']} valuePropName="checked">
+                  <Switch id="READ_ROLE" onChange={onChange} />
+                </Form.Item>
+              </Input.Group>
+              <Input.Group className={styles['options-box']}>
+                <span>WRITE_ROLE: </span>
+                <Form.Item
+                  name="WRITE_ROLE"
+                  className={styles['form-item']}
+                  valuePropName="checked"
+                >
+                  <Switch id="WRITE_ROLE" onChange={onChange} />
                 </Form.Item>
               </Input.Group>
               <Input.Group className={styles['options-box']}>
@@ -240,13 +258,36 @@ const EditRoleDataModal = props => {
                 </Form.Item>
               </Input.Group>
               <Input.Group className={styles['options-box']}>
-                <span>READ_REPORT: </span>
+                <span>READ_DOOR: </span>
+                <Form.Item name="READ_DOOR" className={styles['form-item']} valuePropName="checked">
+                  <Switch name="READ_DOOR" onChange={onChange} />
+                </Form.Item>
+              </Input.Group>
+
+              <Input.Group className={styles['options-box']}>
+                <span>WRITE_DOOR: </span>
                 <Form.Item
-                  name="READ_REPORT"
+                  name="WRITE_DOOR"
                   className={styles['form-item']}
                   valuePropName="checked"
                 >
-                  <Switch name="READ_REPORT" onChange={onChange} />
+                  <Switch name="WRITE_DOOR" onChange={onChange} />
+                </Form.Item>
+              </Input.Group>
+              <Input.Group className={styles['options-box']}>
+                <span>READ_TEAM: </span>
+                <Form.Item name="READ_TEAM" className={styles['form-item']} valuePropName="checked">
+                  <Switch name="READ_TEAM" onChange={onChange} />
+                </Form.Item>
+              </Input.Group>
+              <Input.Group className={styles['options-box']}>
+                <span>WRITE_TEAM: </span>
+                <Form.Item
+                  name="WRITE_TEAM"
+                  className={styles['form-item']}
+                  valuePropName="checked"
+                >
+                  <Switch name="WRITE_TEAM" onChange={onChange} />
                 </Form.Item>
               </Input.Group>
             </Input.Group>

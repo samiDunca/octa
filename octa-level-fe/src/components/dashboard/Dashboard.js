@@ -30,7 +30,7 @@ const Dashboard = () => {
                     <img alt="assessment" src={require('assets/pictures/assessment-card.png')} />
                   }
                 >
-                  <Meta title="Masuri" />
+                  <Meta title="Măsuri" />
                 </Card>
               </Link>
             </Col>
@@ -52,7 +52,7 @@ const Dashboard = () => {
                   style={{ width: 210 }}
                   cover={<img alt="order" src={require('assets/pictures/order-card.png')} />}
                 >
-                  <Meta title="Comandă" />
+                  <Meta title="Comenzi" />
                 </Card>
               </Link>
             </Col>
@@ -66,6 +66,17 @@ const Dashboard = () => {
                   cover={<img alt="montage" src={require('assets/pictures/montage-card.png')} />}
                 >
                   <Meta title="Montaj" />
+                </Card>
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/doors">
+                <Card
+                  hoverable
+                  style={{ width: 210 }}
+                  cover={<img alt="door" src={require('assets/pictures/warehouse.png')} />}
+                >
+                  <Meta title="Uși" />
                 </Card>
               </Link>
             </Col>

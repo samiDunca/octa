@@ -90,8 +90,9 @@ export const updateMontage = (values, montageId) => {
       }
 
       const { data } = await response.json()
-      dispatch(MontageActions.updateMontage({ updatedMontage: data.data }))
-      dispatch(OrderActions.updateOrder({ updatedMontage: data.data, objectName: 'montage' }))
+      console.log({ data }, 'linr 93')
+      dispatch(MontageActions.updateMontage({ updatedMontage: data }))
+      // dispatch(OrderActions.updateOrder({ updatedMontage: data.data, objectName: 'montage' }))
     } catch (err) {
       console.log(err)
     }

@@ -20,8 +20,8 @@ router
   .get(employeeController.getEmployee)
   .put(employeeController.updateEmployee)
   .delete(
-    authController.protect,
-    authController.restrictTo('Admin'),
+    // authController.protect,
+    // authController.restrictTo('Admin'),
     employeeController.deleteEmployee
   );
 

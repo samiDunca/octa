@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 const doorSchema = new mongoose.Schema({
   date: Date,
-  providers: ['Atu Tech', 'Suntech', 'Salamander System'],
+  provider: String,
   DEL: Date,
-  comment: { type: String, default: '' },
+  comment: String,
+  delivered: { type: Boolean, default: false },
 });
 
 const Door = mongoose.model('Door', doorSchema);

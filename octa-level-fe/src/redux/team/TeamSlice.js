@@ -14,18 +14,18 @@ const TeamSlice = createSlice({
     },
     getTeam: (state, { payload }) => {},
     addTeam: (state, { payload }) => {
+      console.log(payload.newTeam)
       return {
         ...state,
         teams: [...state.teams, payload.newTeam],
       }
     },
     updateTeam: (state, { payload }) => {
+      console.log(current(state))
+      console.log(payload.updatedTeam)
       const newArray = state.teams.map(element => {
-        if (element.team._id === payload.updatedTeam._id) {
-          return {
-            ...element,
-            team: payload.updatedTeam,
-          }
+        if (element._id === payload.updatedTeam._id) {
+          return payload.updatedTeam
         } else {
           return element
         }

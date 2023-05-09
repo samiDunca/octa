@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+
+import * as CONSTANTS from './../../../GlobalConstants'
+
 import { Form, Input, Button, Modal, Checkbox, Select, InputNumber } from 'antd'
 
 import { updateAssessment } from 'redux/assessment/AssessmentActions'
@@ -14,36 +17,40 @@ const EditAssessmentDataModal = props => {
   const [form] = Form.useForm()
 
   useEffect(() => {
+    const assessment = props.record?.assessment
+    console.log(assessment)
     form.setFieldsValue({
-      date: props.assessment.date,
-      width: props.assessment.width,
-      height: props.assessment.height,
-      ceiling: props.assessment.ceiling,
-      lintel: props.assessment.lintel === undefined ? 0 : props.assessment.lintel,
-      panel: props.assessment.panel,
-      color: props.assessment.color,
-      engine: props.assessment.engine,
-      highLift: props.assessment.highLift,
-      angle: props.assessment.angle,
-      quantity: props.assessment.quantity,
-      handle: props.assessment.handle,
-      latch: props.assessment.latch,
-      crisisLatch: props.assessment.crisisLatch,
-      comment: props.assessment.comment,
+      date: assessment?.date,
+      width: assessment?.width,
+      height: assessment?.height,
+      ceiling: assessment?.ceiling,
+      lintel: assessment?.lintel === undefined ? 0 : assessment?.lintel,
+      panel: assessment?.panel,
+      color: assessment?.color,
+      engine: assessment?.engine,
+      highLift: assessment?.highLift,
+      angle: assessment?.angle,
+      quantity: assessment?.quantity,
+      handle: assessment?.handle,
+      latch: assessment?.latch,
+      crisisLatch: assessment?.crisisLatch,
+      comment: assessment?.comment,
     })
     console.log('suntem in useEffect editAssessmentModal')
-  }, [props.assessment, props.triggerRerender])
+  }, [props?.record, props.triggerRerender])
 
   const handleSubmit = values => {
     console.log(values)
-    Object.entries(values).forEach(([key, value]) => {
-      value === undefined ? (values[key] = 0) : (values[key] = value)
-    })
-    values['assessmentDatailsAvailable'] = true
-    values['dateDetailsAddeded'] = new Date()
-    dispatch(updateAssessment(values, props.assessment._id))
-    props.handleCancel()
-    form.resetFields()
+    if (props.userInfo.role?.authorities.includes(CONSTANTS.WRITE_ASSESSMENT)) {
+      Object.entries(values).forEach(([key, value]) => {
+        value === undefined ? (values[key] = 0) : (values[key] = value)
+      })
+      values['assessmentDetailsAvailable'] = true
+      values['dateDetailsAddeded'] = new Date()
+      dispatch(updateAssessment(values, props.record.assessment._id))
+      props.handleCancel()
+      form.resetFields()
+    }
   }
   const handleCancel = () => {
     props.handleCancel()
@@ -76,8 +83,18 @@ const EditAssessmentDataModal = props => {
   }
   return (
     <>
-      <Modal onOk={form.submit} open={props.isOpen} onCancel={handleCancel} width={700} centered>
+      <Modal
+        onOk={form.submit}
+        open={props.isOpen}
+        onCancel={handleCancel}
+        width={700}
+        okButtonProps={{
+          disabled: !props.userInfo.role?.authorities.includes(CONSTANTS.WRITE_ASSESSMENT),
+        }}
+        centered
+      >
         <h1 className={commonStyles['modal-heading']}>Detalii Măsuri</h1>
+        <h3>Client: {props.record.client?.name}</h3>
         <Form form={form} onFinish={handleSubmit} layout="vertical">
           <h3 className={styles.categories}>Dimensiuni</h3>
           <Input.Group className={styles.row}>

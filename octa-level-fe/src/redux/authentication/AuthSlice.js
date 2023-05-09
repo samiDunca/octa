@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { forgotPassword, setPassword } from 'redux/authentication/SetPasswordAction'
 import { userLogin } from 'redux/authentication/LoginActions'
 
 const userToken = localStorage.getItem('userToken') ? localStorage.getItem('userToken') : null
+console.log('verificam local storage')
 
 const initialState = {
   loading: false,
@@ -20,10 +22,17 @@ const AuthSlice = createSlice({
   reducers: {
     logout: state => {
       localStorage.removeItem('userToken')
+      localStorage.removeItem('employeeId')
       state.loading = false
       state.userInfo = null
       state.userToken = null
       state.error = null
+    },
+    setCurrentUserData: (state, { payload }) => {
+      return {
+        ...state,
+        userInfo: payload.userInfo,
+      }
     },
   },
   extraReducers: {

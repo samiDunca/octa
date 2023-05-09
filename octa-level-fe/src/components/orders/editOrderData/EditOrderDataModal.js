@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Form, Input, Modal, Button, DatePicker } from 'antd'
+import { Form, Input, Modal, Button, DatePicker, Popconfirm } from 'antd'
 import dayjs from 'dayjs'
 
 import { deleteOrder, updateOrder } from 'redux/order/OrderActions'
@@ -59,10 +59,6 @@ const EditOrderDataModal = props => {
   const deleteOrderHandler = () => {
     // the following updateOffer is now made in the delete request
     // offer field "orderIsPlaced" is set back to false
-    // const updateOfferObj = {
-    //   orderIsPlaced: false,
-    // }
-    // dispatch(updateOffer(updateOfferObj))
 
     dispatch(deleteOrder(props.record?.order._id))
     form.resetFields()
@@ -84,9 +80,16 @@ const EditOrderDataModal = props => {
             <h1 className={styles['edit-modal-heading']}>Editează</h1>
             <h4>Client: ({props.record.client?.name})</h4>
           </div>
-          <Button type="primary" danger onClick={deleteOrderHandler}>
-            Anulează Comanda
-          </Button>
+          <Popconfirm
+            title="Sunteți sigur că doriți să anulați comanda?"
+            onConfirm={deleteOrderHandler}
+            okText="Da"
+            cancelText="Nu"
+          >
+            <Button type="primary" danger>
+              Anulează Comanda
+            </Button>
+          </Popconfirm>
         </div>
 
         <Form form={form} onFinish={handleSubmit} layout="vertical">

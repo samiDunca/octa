@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import * as CONSTANTS from './../../GlobalConstants'
+
 import {
   UploadOutlined,
   CheckSquareOutlined,
@@ -12,7 +14,7 @@ import {
 import { Layout, Space, Table, Tag, Form, Select, Popover } from 'antd'
 import MainNav from 'components/navigation/MainNav'
 import UploadOfferModal from 'components/offers/uploadOffer/UploadOfferModal'
-import EditAssessmentDataModal from 'components/offers/editAssessmentData/EditAssessmentDataModal'
+import ViewAssessmentDataModal from 'components/offers/viewAssessmentData/ViewAssessmentDataModal'
 import PlaceOrderModal from 'components/offers/placeOrder/PlaceOrderModal'
 import AddCommentModal from 'components/offers/addComment/AddCommentModal'
 
@@ -25,11 +27,11 @@ const { Content } = Layout
 
 const Offers = () => {
   const dispatch = useDispatch()
-  const [form] = Form.useForm()
   const selectRefs = useRef({})
   const [selectValues, setSelectValues] = useState({})
 
   const [toggle, setToggle] = useState(false)
+  const [uploadToggle, setUploadToggle] = useState(false)
   const [commentToggle, setCommentToggle] = useState(false)
   const [assessment, setAssessment] = useState({})
   const [record, setRecord] = useState({})
@@ -40,6 +42,7 @@ const Offers = () => {
   const [isCommandAllready, setIsCommandAllready] = useState(false)
 
   const offers = useSelector(state => state.offer.offers)
+  const { userInfo } = useSelector(state => state.auth)
 
   useEffect(() => {
     console.log('suntem in useEffect-ul Offers')
@@ -59,6 +62,7 @@ const Offers = () => {
   const showOfferUploadModal = record => {
     setRecord(record)
     setUploadOfferModalIsOpen(true)
+    setUploadToggle(!uploadToggle)
   }
 
   const handleCancelUploadModal = () => {
@@ -88,8 +92,8 @@ const Offers = () => {
     setCommentModalIsOpen(false)
   }
 
-  const editAssessmentHandler = assessment => {
-    setAssessment(assessment)
+  const editAssessmentHandler = record => {
+    setRecord(record)
     setEditModalIsOpen(true)
     setToggle(!toggle)
   }
@@ -97,7 +101,6 @@ const Offers = () => {
   const editOfferCommentHandler = recordParameter => {
     setCommentModalIsOpen(true)
     setRecord(recordParameter)
-
     setCommentToggle(!commentToggle)
   }
 
@@ -136,7 +139,10 @@ const Offers = () => {
             defaultValue="Ofertă"
             value={selectValues[record.client?._id]}
             onSelect={(value, option) => handlePlaceOrder(value, option, record)}
-            disabled={!record.offer.offerIsUploaded}
+            disabled={
+              !record.offer.offerIsUploaded ||
+              !userInfo.role?.authorities.includes(CONSTANTS.WRITE_OFFER)
+            }
           >
             <Select.Option value="Ofertă">Ofertă</Select.Option>
             <Select.Option value="Comandă">Comandă</Select.Option>
@@ -148,19 +154,23 @@ const Offers = () => {
       key: 'uploadOffer',
       render: (_, record) => (
         <Space size="middle" className={styles['offer-upload-link']}>
-          {record.offer.date ? (
+          {record.offer?.offersUploaded.length > 0 ? (
             <div onClick={() => showOfferUploadModal(record)}>
               {/* Trimis&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
-              <CheckSquareOutlined
-                className={styles['upload-icon']}
-                onClick={() => showOfferUploadModal(record)}
-              />
-              Trimis
+              <Tag bordered={false} color="green">
+                <CheckSquareOutlined
+                  className={styles['upload-icon']}
+                  onClick={() => showOfferUploadModal(record)}
+                />
+                Trimis
+              </Tag>
             </div>
           ) : (
             <div onClick={() => showOfferUploadModal(record)}>
-              <UploadOutlined className={styles['upload-icon']} />
-              De Trimis
+              <Tag bordered={false} color="red">
+                <UploadOutlined className={styles['upload-icon']} />
+                De Trimis
+              </Tag>
             </div>
           )}
         </Space>
@@ -179,11 +189,11 @@ const Offers = () => {
         <Space size="middle">
           {record.assessment.assessmentDetailsAvailable ? (
             <div
-              onClick={() => editAssessmentHandler(record.assessment)}
+              onClick={() => editAssessmentHandler(record)}
               className={styles['offer-upload-link']}
             >
               <FolderViewOutlined className={commonStyles.icon} />
-              disp
+              &nbsp;disp
             </div>
           ) : (
             <Popover
@@ -194,7 +204,7 @@ const Offers = () => {
             >
               <div className={styles['offer-upload-link']}>
                 <EyeInvisibleOutlined className={commonStyles.icon} />
-                indisp
+                &nbsp;indisp
               </div>
             </Popover>
           )}
@@ -207,7 +217,13 @@ const Offers = () => {
       key: 'comment',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={() => editOfferCommentHandler(record)}>
+          <a
+            onClick={() =>
+              userInfo?.role.authorities.includes(CONSTANTS.READ_OFFER) &&
+              editOfferCommentHandler(record)
+            }
+            disabled={!userInfo?.role.authorities.includes(CONSTANTS.READ_OFFER)}
+          >
             <EditOutlined className={commonStyles.icon} />
             &nbsp;Edit
           </a>
@@ -223,28 +239,39 @@ const Offers = () => {
         <div className={commonStyles['header-box']}>
           <h1>Oferte</h1>
         </div>
-        <EditAssessmentDataModal
-          assessment={assessment}
-          isOpen={editModalIsOpen}
-          handleCancel={handleCancelEditModal}
-          triggerRerender={toggle}
-        />
-        <UploadOfferModal
-          isOpen={uploadOfferModalIsOpen}
-          handleCancel={handleCancelUploadModal}
-          record={record}
-        />
-        <PlaceOrderModal
-          isOpen={placeOrderModalIsOpen}
-          handleCancel={handleCancelPlaceOrderModal}
-          record={record}
-        />
-        <AddCommentModal
-          record={record}
-          isOpen={commentModalIsOpen}
-          handleCancel={handleCancelCommentModal}
-          triggerRerender={commentToggle}
-        />
+        {userInfo?.role.authorities.includes(CONSTANTS.READ_OFFER) ? (
+          <ViewAssessmentDataModal
+            record={record}
+            isOpen={editModalIsOpen}
+            handleCancel={handleCancelEditModal}
+            triggerRerender={toggle}
+          />
+        ) : null}
+        {userInfo?.role.authorities.includes(CONSTANTS.READ_OFFER) ? (
+          <UploadOfferModal
+            isOpen={uploadOfferModalIsOpen}
+            handleCancel={handleCancelUploadModal}
+            triggerRerender={uploadToggle}
+            record={record}
+            userInfo={userInfo}
+          />
+        ) : null}
+        {userInfo?.role.authorities.includes(CONSTANTS.WRITE_OFFER) ? (
+          <PlaceOrderModal
+            isOpen={placeOrderModalIsOpen}
+            handleCancel={handleCancelPlaceOrderModal}
+            record={record}
+          />
+        ) : null}
+        {userInfo?.role.authorities.includes(CONSTANTS.READ_OFFER) ? (
+          <AddCommentModal
+            record={record}
+            isOpen={commentModalIsOpen}
+            handleCancel={handleCancelCommentModal}
+            triggerRerender={commentToggle}
+            userInfo={userInfo}
+          />
+        ) : null}
         <Table columns={columns} dataSource={offers} key={record => record.offer?._id}></Table>
       </Content>
     </div>

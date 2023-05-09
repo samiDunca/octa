@@ -1,6 +1,6 @@
-const { getNextWorkingDay } = require('../utils/nextWorkingDay');
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./../controllers/handlerFactory');
+const { orderStatusHandler } = require('../utils/orderStatus');
 
 const Order = require('./../models/orderModel');
 const Offer = require('./../models/offerModel');
@@ -16,6 +16,7 @@ exports.getOrder = factory.getOne(Order);
 exports.getAllOrders = catchAsync(async (req, res, next) => {
   // acest agregate creaza un array cu obiecte ce contin fiecare "client, order, montage"
   // comanda = doar clientii pentru care exista in project un order si un montage asociat
+
   const orders = await Client.aggregate([
     {
       $match: {
@@ -56,10 +57,23 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
       $unwind: '$montage',
     },
     {
+      $lookup: {
+        from: 'doors',
+        localField: 'project.door',
+        foreignField: '_id',
+        as: 'door',
+      },
+    },
+    {
+      $unwind: '$door',
+    },
+
+    {
       $match: {
         $or: [
           { 'project.order': { $exists: true } },
           { 'project.montage': { $exists: true } },
+          { 'project.door': { $exists: true } },
         ],
       },
     },
@@ -74,14 +88,18 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
         },
         order: '$order',
         montage: '$montage',
+        door: '$door',
       },
     },
   ]);
 
+  const updatedData = await orderStatusHandler(orders);
+  console.log(updatedData);
+
   res.status(200).json({
     status: 'success',
     result: orders.length,
-    data: orders,
+    data: updatedData,
   });
 });
 
@@ -94,7 +112,7 @@ exports.addOrder = catchAsync(async (req, res, next) => {
   const project = await Project.findById(client.project);
 
   const montage = await Montage.create({ DEM });
-  const door = await Door.create({});
+  const door = await Door.create({ date: new Date() });
   const order = await Order.create(payment);
   await Project.findByIdAndUpdate(project._id, {
     order,
@@ -110,6 +128,7 @@ exports.addOrder = catchAsync(async (req, res, next) => {
 
 exports.updateOrder = catchAsync(async (req, res, next) => {
   console.log(req.body);
+
   const updatedOrder = await Order.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });

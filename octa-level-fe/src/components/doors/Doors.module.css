@@ -1,0 +1,5 @@
+.view-comment-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

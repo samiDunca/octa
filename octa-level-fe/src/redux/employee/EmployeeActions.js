@@ -3,10 +3,8 @@ import { EmployeeActions } from 'redux/employee/EmployeeSlice'
 export const getAllEmployees = () => {
   return async dispatch => {
     var myHeaders = new Headers()
-    myHeaders.append(
-      'Authorization',
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MmVkOWFhYmMyMWY5OGFhZDJiZDY2ZSIsImlhdCI6MTY4MDc5Mzk0MywiZXhwIjoxNjg4NTY5OTQzfQ.HVUG2UYA05YCRFaSrPFz6MPLR3p9dgKJUxSM0YOMOZw',
-    )
+    const userToken = localStorage.getItem('userToken')
+    myHeaders.append('Authorization', `Bearer ${userToken}`)
 
     var requestOptions = {
       method: 'GET',
@@ -29,9 +27,11 @@ export const getAllEmployees = () => {
 
     try {
       const employeeData = await fetchData()
-      console.log(employeeData)
+
       dispatch(EmployeeActions.getAllEmployees(employeeData))
+      return { employees: employeeData }
     } catch (err) {
+      return 'error'
       console.log(err)
     }
   }
@@ -107,9 +107,15 @@ export const updateEmployeeById = (newEmployee, employeeID) => {
 export const deleteEmployeeById = employeeID => {
   return async dispatch => {
     // TO DELETE YOU NEED THE BEARE TOKEN AND TO HAVE THE ADMIN ROLE ASSIGN TO YOU
+    var myHeaders = new Headers()
+    myHeaders.append(
+      'Cookie',
+      'jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MmU5MTY4ZDgxOWU4N2M0ZjQ3NjA3ZSIsImlhdCI6MTY4MTEzNzk4NSwiZXhwIjoxNjg4OTEzOTg1fQ.9OaGExITX8tZb6FJ0NBEzVnjn1m66vwLgELqusEQy1E',
+    )
     var requestOptions = {
       method: 'DELETE',
       redirect: 'follow',
+      headers: myHeaders,
     }
 
     const deleteEmployee = async () => {

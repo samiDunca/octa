@@ -1,16 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Layout, Button, Table, Space } from 'antd'
-import { Document, Page } from 'react-pdf'
-import { EditOutlined, CheckCircleOutlined } from '@ant-design/icons'
+
+import * as CONSTANTS from './../../GlobalConstants'
+
+import { Layout, Table, Space, Popover } from 'antd'
+import {
+  EditOutlined,
+  CheckCircleOutlined,
+  FolderViewOutlined,
+  EyeInvisibleOutlined,
+} from '@ant-design/icons'
 
 import MainNav from 'components/navigation/MainNav'
 import OrderPaymentModal from 'components/orders/orderPayment/OrderPaymentModal'
-import { getOneOffer } from 'redux/offer/OfferActions'
-
-import commonStyles from 'sharedStyles/CommonStyles.module.css'
+import EditOrderDataModal from 'components/orders/editOrderData/EditOrderDataModal'
 import { getAllOrders } from 'redux/order/OrderActions'
-import EditOrderDataModal from './editOrderData/EditOrderDataModal'
+
+import styles from 'components/orders/Orders.module.css'
+import commonStyles from 'sharedStyles/CommonStyles.module.css'
+
 const { Content } = Layout
 
 const Orders = () => {
@@ -22,6 +30,7 @@ const Orders = () => {
   const [editModalIsOpen, setEditModalIsOpen] = useState(false)
 
   const orders = useSelector(state => state.order.orders)
+  const { userInfo } = useSelector(state => state.auth)
 
   useEffect(() => {
     console.log('suntem in useEffect-ul Orders')
@@ -74,7 +83,33 @@ const Orders = () => {
     setEditToggle(!editToggle)
   }
 
-  // const handleCancel =
+  // dispay status
+  const dispayStatusHandler = record => {
+    if (record.order?.status === 'done') {
+      // status 1
+      return (
+        <div>
+          <div className={styles['status-done']}>ușă: livrat</div>
+          <div className={styles['status-done']}>montaj: executat</div>
+        </div>
+      )
+    } else if (record.order?.status === 'partially') {
+      // status 2
+      return (
+        <div>
+          <div className={styles['status-done']}>ușă: livrat</div>
+          <div className={styles['status-undone']}>montaj: de executat</div>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div className={styles['status-undone']}>ușă: de livrat</div>
+          <div className={styles['status-undone']}>montaj: de executat</div>
+        </div>
+      )
+    }
+  }
 
   const columns = [
     {
@@ -114,6 +149,36 @@ const Orders = () => {
       title: 'Status',
       dataIndex: ['order', 'status'],
       key: 'status',
+      render: (_, record) => dispayStatusHandler(record),
+    },
+    {
+      title: 'Observații',
+      dataIndex: 'comment',
+      key: 'comment',
+      render: (_, record) => (
+        <Space size="middle">
+          {record.order.comment ? (
+            <Popover
+              title="Observații: "
+              content={`${record.order.comment}`}
+              trigger="hover"
+              placement="leftTop"
+            >
+              <div className={styles['view-comment-label']}>
+                <FolderViewOutlined className={commonStyles.icon} />
+                &nbsp;disp
+              </div>
+            </Popover>
+          ) : (
+            <Popover title="Observații inexistente" trigger="hover" placement="leftTop">
+              <div className={styles['view-comment-label']}>
+                <EyeInvisibleOutlined className={commonStyles.icon} />
+                &nbsp;indisp
+              </div>
+            </Popover>
+          )}
+        </Space>
+      ),
     },
     {
       title: 'Action',
@@ -121,52 +186,39 @@ const Orders = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={() => showEditModal(record)}>Edit</a>
+          <a
+            onClick={() =>
+              userInfo?.role.authorities.includes(CONSTANTS.WRITE_ORDER) && showEditModal(record)
+            }
+            disabled={!userInfo?.role.authorities.includes(CONSTANTS.WRITE_ORDER)}
+          >
+            Edit
+          </a>
         </Space>
       ),
     },
   ]
 
-  const [url, setUrl] = useState('')
-  const handleGetOneOffer = async () => {
-    const offerId = '64310edba8994eac6e4922a7'
-    const urlfirs = await dispatch(getOneOffer(offerId))
-    console.log(urlfirs)
-    setUrl(urlfirs)
-    // generateHtmlCode(urlfirs)
-  }
-
-  const generateHtmlCode = url => {
-    let id = 123
-
-    let link = document.createElement('a')
-    link.href = url
-    link.setAttribute('download', 'offer.pdf')
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    // setLoading(false)
-    let myDiv = document.getElementById('myDiv')
-    myDiv.appendChild(link)
-  }
-
   return (
     <div>
       <MainNav />
       <div id="myDiv"></div>
-      {/* {url && <embed src={url} width="800px" height="2100px" />} */}
-      <OrderPaymentModal
-        isOpen={paymentModalIsOpen}
-        handleCancel={handleCancelPaymentModal}
-        record={record}
-        triggerRerender={paymentToggle}
-      />
-      <EditOrderDataModal
-        isOpen={editModalIsOpen}
-        handleCancel={handleCancelEditModal}
-        record={record}
-        triggerRerender={editToggle}
-      />
+      {userInfo?.role.authorities.includes(CONSTANTS.WRITE_ORDER) ? (
+        <OrderPaymentModal
+          isOpen={paymentModalIsOpen}
+          handleCancel={handleCancelPaymentModal}
+          record={record}
+          triggerRerender={paymentToggle}
+        />
+      ) : null}
+      {userInfo?.role.authorities.includes(CONSTANTS.WRITE_ORDER) ? (
+        <EditOrderDataModal
+          isOpen={editModalIsOpen}
+          handleCancel={handleCancelEditModal}
+          record={record}
+          triggerRerender={editToggle}
+        />
+      ) : null}
       <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
         <div className={commonStyles['header-box']}>
           <h1>Comenzi</h1>

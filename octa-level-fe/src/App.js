@@ -2,7 +2,9 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 
+import { getAllEmployees } from 'redux/employee/EmployeeActions'
 import { getAllAssessments } from 'redux/assessment/AssessmentActions'
+import { AuthActions } from 'redux/authentication/AuthSlice'
 
 import './App.css'
 import Assessments from './components/assessments/Assessments'
@@ -22,11 +24,20 @@ import Teams from 'components/teams/Teams'
 
 const App = () => {
   const dispatch = useDispatch()
+  const employeeId = localStorage.getItem('employeeId')
   const { userToken } = useSelector(state => state.auth)
+
   useEffect(() => {
-    console.log('suntem in App component')
+    console.log('useEffectul APP APP APP APP APP')
     if (userToken) {
-      dispatch(getAllAssessments())
+      dispatch(getAllEmployees()).then(response => {
+        if (response !== 'error') {
+          const currentEmployee = response.employees.filter(el => el._id === employeeId)
+          if (currentEmployee.length > 0) {
+            dispatch(AuthActions.setCurrentUserData({ userInfo: currentEmployee[0] }))
+          }
+        }
+      })
     }
   }, [userToken])
   return (

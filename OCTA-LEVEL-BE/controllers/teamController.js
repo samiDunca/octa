@@ -93,8 +93,8 @@ exports.updateTeam = catchAsync(async (req, res, next) => {
   const teamId = req.params.id;
   const { name, employees } = req.body;
 
-  const updatedTeam = await Team.findOneAndUpdate(
-    { _id: teamId },
+  const updatedTeam = await Team.findByIdAndUpdate(
+    teamId,
     { name, employees },
     { new: true }
   );

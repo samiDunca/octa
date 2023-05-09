@@ -8,6 +8,7 @@ const clientSchema = new mongoose.Schema({
   phone: String,
   address: { type: String, default: '' },
   reference: String,
+  comment: String,
 
   //one to one project
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },

@@ -4,8 +4,10 @@ const offerSchema = new mongoose.Schema({
   comment: { type: String, default: '' },
   date: Date,
   offerUploadName: String,
-  offerIsUploaded: { type: Boolean, default: false },
   orderIsPlaced: { type: Boolean, default: false },
+  offerIsUploaded: { type: Boolean, default: false },
+  // offersUploaded: [{ name: String, location: String }],
+  offersUploaded: { type: Array, default: [] },
 });
 
 const Offer = mongoose.model('Offer', offerSchema);

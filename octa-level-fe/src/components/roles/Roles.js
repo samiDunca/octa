@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
+import * as CONSTANTS from './../../GlobalConstants'
+
 import { Layout, Button, Table, Space } from 'antd'
 
 import DashNav from 'components/navigation/DashNav'
@@ -20,6 +23,7 @@ const Roles = () => {
   const [toggle, setToggle] = useState(false)
 
   const roles = useSelector(state => state.role.roles)
+  const { userInfo } = useSelector(state => state.auth)
 
   useEffect(() => {
     dispatch(getAllRoles())
@@ -73,7 +77,15 @@ const Roles = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={() => editAssessmentHandler(record)}>Edit</a>
+          <a
+            onClick={() =>
+              userInfo?.role.authorities.includes(CONSTANTS.WRITE_ROLE) &&
+              editAssessmentHandler(record)
+            }
+            disabled={!userInfo?.role.authorities.includes(CONSTANTS.WRITE_ROLE)}
+          >
+            Edit
+          </a>
         </Space>
       ),
     },
@@ -85,17 +97,25 @@ const Roles = () => {
       <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
         <div className={commonStyles['header-box']}>
           <h1>Roles</h1>
-          <Button type="primary" onClick={showNewRoleModal}>
+          <Button
+            type="primary"
+            onClick={showNewRoleModal}
+            disabled={!userInfo?.role.authorities.includes(CONSTANTS.WRITE_ROLE)}
+          >
             Adaugă Rol
           </Button>
         </div>
-        <AddRoleModal isOpen={newRoleModalIsOpen} handleCancel={handleCancelNewRoleModal} />
-        <EditRoleDataModal
-          isOpen={editModalIsOpen}
-          handleCancel={handleCancelEditModal}
-          oneRole={oneRole}
-          triggerRerender={toggle}
-        />
+        {userInfo?.role.authorities.includes(CONSTANTS.WRITE_ROLE) ? (
+          <AddRoleModal isOpen={newRoleModalIsOpen} handleCancel={handleCancelNewRoleModal} />
+        ) : null}
+        {userInfo?.role.authorities.includes(CONSTANTS.WRITE_ROLE) ? (
+          <EditRoleDataModal
+            isOpen={editModalIsOpen}
+            handleCancel={handleCancelEditModal}
+            oneRole={oneRole}
+            triggerRerender={toggle}
+          />
+        ) : null}
         <Table columns={columns} dataSource={roles} key="name" />
       </Content>
     </div>

@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const { Blob } = require('buffer');
+const CircularJSON = require('circular-json');
 
 const Offer = require('./../models/offerModel');
 const Client = require('./../models/clientModel');
@@ -113,24 +114,23 @@ exports.addOffer = catchAsync(async (req, res, next) => {
 });
 
 exports.updateOffer = catchAsync(async (req, res, next) => {
-  // console.log(req.file);
-  // console.log(req.body);
+  let updatedOffer;
 
+  const offer = await Offer.findById(req.params.id);
   const newOfferObj = req.body;
-  console.log(req.body);
-
   // don't forget to add new date at upload document
-  if (req.file) newOfferObj['offerUploadName'] = req.file.filename;
-
-  const updatedOffer = await Offer.findByIdAndUpdate(
-    req.params.id,
-    newOfferObj,
-    {
+  if (req.body.name && req.body.location) {
+    offer.offersUploaded.push(newOfferObj);
+    offer.offerIsUploaded = true;
+    offer.date = new Date();
+    updatedOffer = await offer.save();
+  } else {
+    updatedOffer = await Offer.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    }
-  );
+    });
+  }
 
-  console.log({ updateOffer });
+  console.log({ updatedOffer });
 
   res.status(200).json({
     status: 'success',
@@ -183,5 +183,21 @@ exports.deleteOffer = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: pairDeletedDocuments,
+  });
+});
+
+exports.deleteSpecificDocuments = catchAsync(async (req, res, next) => {
+  const documentsLocations = req.body.documentsLocations;
+  const updatedOffer = await Offer.findByIdAndUpdate(
+    req.params.offerId,
+    {
+      $pull: { offersUploaded: { location: { $in: documentsLocations } } },
+    },
+    { new: true }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    data: updatedOffer,
   });
 });

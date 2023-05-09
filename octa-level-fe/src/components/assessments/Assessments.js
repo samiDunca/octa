@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+
+import * as CONSTANTS from './../../GlobalConstants'
+
 import { Layout, Space, Table, Button, Tag } from 'antd'
 
 import MainNav from 'components/navigation/MainNav'
@@ -15,15 +18,17 @@ const Assessments = () => {
 
   const dispatch = useDispatch()
   const [toggle, setToggle] = useState(false)
-  const [assessment, setAssessment] = useState({})
+  const [record, setRecord] = useState({})
   const [newAssessModalIsOpen, setNewAssessModalIsOpen] = useState(false)
   const [editModalIsOpen, setEditModalIsOpen] = useState(false)
 
   const assessments1 = useSelector(state => state.assessment.assessments)
+  const { userInfo } = useSelector(state => state.auth)
 
+  // userInfo === null ? dispatch(getAll)
   useEffect(() => {
-    console.log('suntem in useEffect-ul Assessments')
-    // dispatch(getAllAssessments())
+    console.log('useEffect Assessments')
+    dispatch(getAllAssessments())
   }, [])
 
   const showNewAssessmentModal = () => {
@@ -42,9 +47,8 @@ const Assessments = () => {
     setEditModalIsOpen(false)
   }
 
-  const editAssessmentHandler = async record => {
-    console.log('on row click:', { record })
-    setAssessment(record.assessment)
+  const editAssessmentHandler = async recordPar => {
+    setRecord(recordPar)
     showEditModal(true)
     setToggle(!toggle)
   }
@@ -92,7 +96,15 @@ const Assessments = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={() => editAssessmentHandler(record)}>Edit</a>
+          <a
+            onClick={() =>
+              userInfo?.role.authorities.includes(CONSTANTS.READ_ASSESSMENT) &&
+              editAssessmentHandler(record)
+            }
+            disabled={!userInfo?.role.authorities.includes(CONSTANTS.READ_ASSESSMENT)}
+          >
+            Edit
+          </a>
         </Space>
       ),
     },
@@ -104,20 +116,29 @@ const Assessments = () => {
       <Content className={styles['site-layout']}>
         <div className={commonStyles['header-box']}>
           <h1>Măsuri</h1>
-          <Button type="primary" onClick={showNewAssessmentModal}>
+          <Button
+            type="primary"
+            onClick={showNewAssessmentModal}
+            disabled={!userInfo?.role.authorities.includes(CONSTANTS.WRITE_ASSESSMENT)}
+          >
             Adaugă Măsură
           </Button>
         </div>
-        <AddAssessmentModal
-          isOpen={newAssessModalIsOpen}
-          handleCancel={handleCancelNewAssessModal}
-        />
-        <EditAssessmentDataModal
-          assessment={assessment}
-          isOpen={editModalIsOpen}
-          handleCancel={handleCancelEditModal}
-          triggerRerender={toggle}
-        />
+        {userInfo?.role.authorities.includes(CONSTANTS.WRITE_ASSESSMENT) ? (
+          <AddAssessmentModal
+            isOpen={newAssessModalIsOpen}
+            handleCancel={handleCancelNewAssessModal}
+          />
+        ) : null}
+        {userInfo?.role.authorities.includes(CONSTANTS.READ_ASSESSMENT) ? (
+          <EditAssessmentDataModal
+            record={record}
+            isOpen={editModalIsOpen}
+            handleCancel={handleCancelEditModal}
+            triggerRerender={toggle}
+            userInfo={userInfo}
+          />
+        ) : null}
         {assessments1 && <Table columns={columns} dataSource={assessments1} key="name" />}
       </Content>
     </div>

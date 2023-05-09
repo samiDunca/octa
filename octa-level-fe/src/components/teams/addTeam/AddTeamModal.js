@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Button, Modal, Switch } from 'antd'
 
-// import { addNewRole } from 'redux/role/RoleActions'
+import { addNewTeam } from 'redux/team/TeamActions'
+import { getAllEmployees } from 'redux/employee/EmployeeActions'
 
 import styles from 'components/teams/addTeam/AddTeamModal.module.css'
 import commonStyles from 'sharedStyles/CommonStyles.module.css'
@@ -10,8 +11,18 @@ import commonStyles from 'sharedStyles/CommonStyles.module.css'
 const AddTeamModal = props => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
+  const [employeesFetched, setEmployeesFetched] = useState(false)
 
   const employees = useSelector(state => state.employee.employees)
+
+  useEffect(() => {
+    console.log('FALSE')
+    if (props.isOpen && !employeesFetched) {
+      console.log('TRUE')
+      dispatch(getAllEmployees())
+      setEmployeesFetched(true)
+    }
+  }, [props.isOpen, employeesFetched])
 
   const handleSubmit = values => {
     console.log(employees)
@@ -21,9 +32,8 @@ const AddTeamModal = props => {
       key => justTheEmployeesObj[key] === true,
     )
     let finalObject = { name, employees: arrayOfEmployees }
-    console.log(finalObject)
 
-    // dispatch(addNewRole(finalObject))
+    dispatch(addNewTeam(finalObject))
 
     form.resetFields()
     props.handleCancel()
@@ -75,7 +85,7 @@ const AddTeamModal = props => {
             <Input.Group className={styles['options-container']}>
               {employees.map(el => {
                 return (
-                  <Input.Group className={styles['options-box']}>
+                  <Input.Group key={el._id} className={styles['options-box']}>
                     <span>
                       {el.firstName} {el.lastName}
                     </span>

@@ -1,0 +1,13 @@
+.status-done {
+  color: green;
+}
+
+.status-undone {
+  color: red;
+}
+
+.view-comment-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

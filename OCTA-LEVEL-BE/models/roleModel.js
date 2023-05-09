@@ -6,8 +6,6 @@ const roleSchema = mongoose.Schema({
     required: [true, 'a role must have a name'],
     unique: true,
   },
-  //one to many employee
-  // employee: { type: mongoose.Schema.Types.ObjectId, ref: 'employee' },
   authorities: [
     'READ_EMPLOYEE',
     'WRITE_EMPLOYEE',
@@ -21,7 +19,12 @@ const roleSchema = mongoose.Schema({
     'WRITE_MONTAGE',
     'READ_CLIENT',
     'WRITE_CLIENT',
-    'READ_REPORT',
+    'READ_DOOR',
+    'WRITE_DOOR',
+    'READ_TEAM',
+    'WRITE_TEAM',
+    'READ_ROLE',
+    'WRITE_ROLE',
   ],
 });
 

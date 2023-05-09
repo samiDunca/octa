@@ -1,9 +1,11 @@
-const Employee = require('./../models/employeeModel');
 const factory = require('./handlerFactory');
 const crypto = require('crypto');
 const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
 const sendEmail = require('./../utils/email');
+
+const Employee = require('./../models/employeeModel');
+const Team = require('./../models/teamModel');
 
 exports.addEmployee = catchAsync(async (req, res, next) => {
   // 1) Generate the random reset token
@@ -59,7 +61,24 @@ exports.addEmployee = catchAsync(async (req, res, next) => {
 exports.getAllEmployees = factory.getAll(Employee);
 exports.getEmployee = factory.getOne(Employee);
 exports.updateEmployee = factory.updateOne(Employee);
-exports.deleteEmployee = factory.deleteOne(Employee);
+
+exports.deleteEmployee = catchAsync(async (req, res, next) => {
+  const employeeId = req.params.id;
+
+  // Remove the employee from any teams that they're a part of
+  await Team.updateMany(
+    { employees: employeeId },
+    { $pull: { employees: employeeId } }
+  );
+
+  // Delete the employee
+  await Employee.findByIdAndDelete(employeeId);
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
 
 // 2) Generate the random reset token
 // 3) Send it to the employee's email

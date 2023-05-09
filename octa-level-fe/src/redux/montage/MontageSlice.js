@@ -20,6 +20,7 @@ const MontageSlice = createSlice({
       }
     },
     updateMontage: (state, { payload }) => {
+      console.log(payload)
       const newArray = state.montages.map(element => {
         if (element.montage._id === payload.updatedMontage._id) {
           return {
@@ -30,7 +31,7 @@ const MontageSlice = createSlice({
           return element
         }
       })
-
+      console.log({ newArray })
       return {
         ...state,
         montages: newArray,

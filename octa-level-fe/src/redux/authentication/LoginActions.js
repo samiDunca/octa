@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { getAllEmployees } from 'redux/employee/EmployeeActions'
 
 export const userLogin = createAsyncThunk(
   'auth/login',
@@ -31,7 +32,8 @@ export const userLogin = createAsyncThunk(
         throw new Error(data.message)
       }
 
-      localStorage.setItem('userToken', data.token)
+      await localStorage.setItem('userToken', data.token)
+      localStorage.setItem('employeeId', data.data.employee._id)
       navigate('/')
       return data
     } catch (error) {

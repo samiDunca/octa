@@ -1,0 +1,8 @@
+.edit-modal-subtitle-box {
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
