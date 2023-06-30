@@ -1,49 +1,12 @@
 const fs = require('fs');
-const path = require('path');
-const multer = require('multer');
-const { Blob } = require('buffer');
-const CircularJSON = require('circular-json');
 
 const Offer = require('./../models/offerModel');
 const Client = require('./../models/clientModel');
 const Assessment = require('./../models/assessmentModel');
 const Project = require('./../models/projectModel');
-const ClientDocuments = require('./../models/clientDocumentsModel');
 
-const { restrictTo } = require('./authController');
-const factory = require('./../controllers/handlerFactory');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
-
-const folderFilesPath = path.join(__dirname, '../public/clients/fileUploads');
-
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    console.log(file);
-    cb(null, 'public/clients/fileUploads');
-  },
-  filename: (req, file, cb) => {
-    const ext = file.mimetype.split('/')[1];
-
-    // filename: offer-id-datenow.pdf
-    cb(null, `offer-${req.params.id}-${Date.now()}.${ext}`);
-  },
-});
-
-const multerFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('application')) {
-    cb(null, true);
-  } else {
-    cb(
-      new AppError('Not an pdf! Please upload only pdf extensions.', 400),
-      false
-    );
-  }
-};
-
-const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
-
-exports.uploadClientOffer = upload.single('file');
 
 exports.getAllOffers = catchAsync(async (req, res, next) => {
   const offers = await Client.aggregate([
@@ -118,7 +81,7 @@ exports.updateOffer = catchAsync(async (req, res, next) => {
 
   const offer = await Offer.findById(req.params.id);
   const newOfferObj = req.body;
-  // don't forget to add new date at upload document
+
   if (req.body.name && req.body.location) {
     offer.offersUploaded.push(newOfferObj);
     offer.offerIsUploaded = true;
@@ -159,9 +122,6 @@ exports.deleteOffer = catchAsync(async (req, res, next) => {
   // 1. populez project dinspre client si obtin ID-urile de sters
   const client = await Client.findById(req.params.id).populate('project');
 
-  const delClientDocuments = await ClientDocuments.findByIdAndDelete(
-    client.clientDocuments
-  );
   const delAssessment = await Assessment.findByIdAndDelete(
     client.project.assessment
   );
@@ -170,15 +130,11 @@ exports.deleteOffer = catchAsync(async (req, res, next) => {
   const delClient = await Client.findByIdAndDelete(client._id);
 
   const pairDeletedDocuments = {
-    delClientDocuments,
     delAssessment,
     delOffer,
     delProject,
     delClient,
   };
-
-  // const clientDocuments = await Model.findByIdAndDelete(clients?.clientDocuments);
-  // console.log(clients);
 
   res.status(200).json({
     status: 'success',

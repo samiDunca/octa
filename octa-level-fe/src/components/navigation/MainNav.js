@@ -19,7 +19,7 @@ const MainNav = () => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['2']}
+          // defaultSelectedKeys={['2']}
           items={[
             { label: 'Home', key: '1', icon: <Link to="/" /> },
             { label: 'Masuri', key: '2', icon: <Link to="/assessments" /> },

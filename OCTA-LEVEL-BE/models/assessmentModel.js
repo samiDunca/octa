@@ -18,8 +18,6 @@ const assessmentSchema = new mongoose.Schema({
   date: { type: Date, default: new Date() },
   dateDetailsAddeded: Date,
   assessmentDetailsAvailable: { type: Boolean, default: false },
-  // dateOfferGenerated: Date,
-  // offerIsGenerated: { type: Boolean, default: false },
 });
 
 const Assessment = mongoose.model('Assessment', assessmentSchema);

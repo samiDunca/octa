@@ -1,5 +1,4 @@
 const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
 const mongoose = require('mongoose');
 
@@ -7,7 +6,6 @@ const Montage = require('./../models/montageModel');
 const Client = require('./../models/clientModel');
 const Team = require('./../models/teamModel');
 
-// exports.getAllMontages = catchAsync(async (req, res, next) => {});
 
 exports.getAllMontages = catchAsync(async (req, res, next) => {
   const montages = await Client.aggregate([

@@ -9,12 +9,6 @@ import styles from 'components/dashboard/Dashboard.module.css'
 const { Meta } = Card
 
 const Dashboard = () => {
-  // useEffect(() => {
-  //   console.log('suntem in useEffect DASHBOARD')
-  //   console.log(userToken)
-  // }, [userToken])
-
-  // if (userToken) {
   return (
     <div>
       <DashNav />

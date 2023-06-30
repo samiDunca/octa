@@ -26,7 +26,7 @@ const DashNav = () => {
           mode="horizontal"
           // selectedKeys={[current]}
           className={styles['navbar-layout']}
-          defaultSelectedKeys={['1']}
+          // defaultSelectedKeys={['1']}
           items={[
             { label: 'Home', key: '1', icon: <Link to="/" /> },
             { label: 'Roluri', key: '2', icon: <Link to="/roles" /> },

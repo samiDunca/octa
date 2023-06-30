@@ -10,6 +10,5 @@ router
   .put(clientController.updateClient)
   .get(clientController.getClient)
   .delete(clientController.deleteClient);
-// .put(offerController.uploadClientOffer, offerController.updateOffer);
 
 module.exports = router;

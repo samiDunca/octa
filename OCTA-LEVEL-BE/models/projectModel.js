@@ -5,7 +5,6 @@ const projectSchema = new mongoose.Schema({
   montage: { type: mongoose.Schema.Types.ObjectId, ref: 'Montage' },
   order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' },
   assessment: { type: mongoose.Schema.Types.ObjectId, ref: 'Assessment' },
-  journal: { type: mongoose.Schema.Types.ObjectId, ref: 'Journal' },
   door: { type: mongoose.Schema.Types.ObjectId, ref: 'Door' },
 });
 

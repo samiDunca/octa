@@ -6,7 +6,6 @@ const offerSchema = new mongoose.Schema({
   offerUploadName: String,
   orderIsPlaced: { type: Boolean, default: false },
   offerIsUploaded: { type: Boolean, default: false },
-  // offersUploaded: [{ name: String, location: String }],
   offersUploaded: { type: Array, default: [] },
 });
 

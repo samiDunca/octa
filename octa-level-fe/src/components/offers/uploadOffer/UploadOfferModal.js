@@ -210,6 +210,7 @@ const UploadOfferModal = props => {
           <Popconfirm
             title="Sunteți sigur că doriți să ștergeți clientul?"
             onConfirm={deleteClientHandler}
+            onCancel={deleteClientHandler}
             okText="Da"
             cancelText="Nu"
           >

@@ -5,8 +5,6 @@ const Employee = require('./../models/employeeModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const sendEmail = require('./../utils/email');
-const { create } = require('domain');
-const { isGeneratorFunction } = require('util/types');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -44,12 +42,10 @@ exports.signup = catchAsync(async (req, res, next) => {
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
-  // 1) Check if email and password exists
   if (!email || !password) {
     return next(new AppError('Please provide email and password', 400));
   }
 
-  // 2) Check if email and password are correct
   const employee = await Employee.findOne({ email }).select('+password');
 
   if (
@@ -59,12 +55,10 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorrect email or password', 401));
   }
 
-  // 3) if evrting ok, send response
   createSendToken(employee, 200, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-  // 1) Get token and check if it's there
   let token;
   if (
     req.headers.authorization &&
@@ -128,10 +122,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 2) Generate the random reset token
   const resetToken = employee.createPasswordResetToken();
   await employee.save();
-  // 3) Send it to the employee's email
-  // const resetURL = `${req.protocol}://${req.get(
-  //   'host'
-  // )}/api/v1/employee/reset-password/${resetToken}`;
+
   const resetURL = `${req.headers.origin}/reset-password/${resetToken}`;
 
   const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email! \n`;
@@ -182,9 +173,5 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   employee.passwordResetExpires = undefined;
   await employee.save();
 
-  // 3) Update changedPasswordAt property for the employee
-  // in the employeeModel
-
-  // 4) Log the employee in, send JWT
   createSendToken(employee, 200, res);
 });

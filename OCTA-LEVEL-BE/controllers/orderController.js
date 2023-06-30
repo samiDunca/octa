@@ -7,16 +7,12 @@ const Offer = require('./../models/offerModel');
 const Client = require('./../models/clientModel');
 const Assessment = require('./../models/assessmentModel');
 const Project = require('./../models/projectModel');
-const ClientDocuments = require('./../models/clientDocumentsModel');
 const Montage = require('../models/montageModel');
 const Door = require('./../models/doorModel');
 
 exports.getOrder = factory.getOne(Order);
 
 exports.getAllOrders = catchAsync(async (req, res, next) => {
-  // acest agregate creaza un array cu obiecte ce contin fiecare "client, order, montage"
-  // comanda = doar clientii pentru care exista in project un order si un montage asociat
-
   const orders = await Client.aggregate([
     {
       $match: {
@@ -104,7 +100,6 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
 });
 
 exports.addOrder = catchAsync(async (req, res, next) => {
-  // payment = {price, paid}
   const { clientId, DEM, payment } = req.body;
 
   const client = await Client.findById(clientId);
@@ -155,7 +150,6 @@ exports.deleteOrder = catchAsync(async (req, res, next) => {
     orderIsPlaced: false,
   });
 
-  // await Project.updateOne({ order: orderId }, { $unset: { order: 1 } });
   await Project.findByIdAndUpdate(project._id, {
     $unset: { order: 1, montage: 1, door: 1 },
   });

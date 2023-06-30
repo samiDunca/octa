@@ -122,6 +122,12 @@ const SetPassword = () => {
           <button className={commonAuthStyles.button} onClick={submitFormHandler}>
             {CONSTANTS.SUBMIT}
           </button>
+          <div className={commonAuthStyles['back-and-forth-page-link-btn']}>
+            <button type="button" onClick={() => navigate('/login')}>
+              LOGHEAZĂ-TE CU NOUA PAROLĂ
+              <span className={commonAuthStyles['login-btn-span']}> &rarr;</span>
+            </button>
+          </div>
         </div>
       </form>
     </div>

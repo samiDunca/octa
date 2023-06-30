@@ -1,5 +1,4 @@
 const factory = require('./handlerFactory');
-const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
 
 const Team = require('./../models/teamModel');
@@ -48,10 +47,8 @@ exports.getTeam = factory.getOne(Team);
 exports.addTeam = catchAsync(async (req, res, next) => {
   const { name, employees } = req.body;
 
-  // Create a new team document
   const team = await Team.create({ name, employees });
 
-  // Populate employee details using the aggregation pipeline
   const populatedTeam = await Team.aggregate([
     {
       $match: { _id: team._id },
@@ -137,10 +134,8 @@ exports.updateTeam = catchAsync(async (req, res, next) => {
 });
 exports.deleteTeam = catchAsync(async (req, res, next) => {
   const teamId = req.params.id;
-  // Remove the team's _id from any montage documents that contain it
   await Montage.updateMany({ team: teamId }, { $unset: { team: '' } });
 
-  // Delete the team document
   await Team.findByIdAndDelete(teamId);
 
   res.status(204).json({

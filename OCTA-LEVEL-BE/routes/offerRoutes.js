@@ -19,6 +19,4 @@ router
   .put(offerController.updateOffer)
   .delete(offerController.deleteOffer);
 
-// .put(offerController.uploadClientOffer, offerController.updateOffer);
-
 module.exports = router;

@@ -1,7 +1,5 @@
 const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
-const mongoose = require('mongoose');
 
 const Door = require('./../models/doorModel');
 const Client = require('./../models/clientModel');

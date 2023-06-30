@@ -3,57 +3,51 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const employeeSchema = new mongoose.Schema(
-  {
-    // name: {
-    //   type: String,
-    //   required: [true, 'the employee must have a name'],
-    // },
-    firstName: {
-      type: String,
-      require: [true, 'employee must have a firstName'],
-    },
-    lastName: {
-      type: String,
-      require: [true, 'employee must have a lastName'],
-    },
-    email: {
-      type: String,
-      require: [true, 'employee must have an email'],
-      unique: true,
-      lowercase: true,
-      validate: [validator.isEmail, 'Please provide a valid Email'],
-    },
-    password: {
-      type: String,
-      select: false,
-    },
-    passwordConfirm: {
-      type: String,
-      validate: {
-        // This only works on CREATE and SAVE!!
-        validator: function (el) {
-          return el === this.password;
-        },
-        message: 'Passwords are not the same!',
+const employeeSchema = new mongoose.Schema({
+  // name: {
+  //   type: String,
+  //   required: [true, 'the employee must have a name'],
+  // },
+  firstName: {
+    type: String,
+    require: [true, 'employee must have a firstName'],
+  },
+  lastName: {
+    type: String,
+    require: [true, 'employee must have a lastName'],
+  },
+  email: {
+    type: String,
+    require: [true, 'employee must have an email'],
+    unique: true,
+    lowercase: true,
+    validate: [validator.isEmail, 'Please provide a valid Email'],
+  },
+  password: {
+    type: String,
+    select: false,
+  },
+  passwordConfirm: {
+    type: String,
+    validate: {
+      // This only works on CREATE and SAVE!!
+      validator: function (el) {
+        return el === this.password;
       },
-      select: false,
+      message: 'Passwords are not the same!',
     },
-    passwordChangedAt: Date,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
-    address: String,
-    phone: String,
+    select: false,
+  },
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  address: String,
+  phone: String,
 
-    // one to many
-    role: { type: mongoose.Schema.Types.ObjectId, ref: 'Role' },
-    teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],
-  }
-  // {
-  //   toJSON: { virtuals: true },
-  //   toObject: { virtuals: true },
-  // }
-);
+  // one to many
+  role: { type: mongoose.Schema.Types.ObjectId, ref: 'Role' },
+  teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],
+});
 
 employeeSchema.pre(/^find/, function (next) {
   this.populate({
